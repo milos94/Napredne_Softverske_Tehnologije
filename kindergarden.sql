@@ -38,6 +38,7 @@ CREATE TABLE `account` (
 
 LOCK TABLES `account` WRITE;
 /*!40000 ALTER TABLE `account` DISABLE KEYS */;
+INSERT INTO `account` VALUES (10001,0,'/','2017/12/01'),(10002,0,'/','2017/12/01'),(10003,0,'/','2017/12/01');
 /*!40000 ALTER TABLE `account` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -109,11 +110,13 @@ DROP TABLE IF EXISTS `group`;
 CREATE TABLE `group` (
   `id` int(11) NOT NULL,
   `name` varchar(45) DEFAULT NULL,
-  `classroom_id` int(11) NOT NULL,
+  `classroom_id` int(11) DEFAULT NULL,
   `price` double DEFAULT NULL,
   `comment` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `id_UNIQUE` (`id`)
+  UNIQUE KEY `id_UNIQUE` (`id`),
+  KEY `fk_group_1_idx` (`classroom_id`),
+  CONSTRAINT `fk_group_1` FOREIGN KEY (`classroom_id`) REFERENCES `classroom` (`id`) ON DELETE SET NULL ON UPDATE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -143,7 +146,9 @@ CREATE TABLE `guardian` (
   `account_id` int(11) DEFAULT NULL,
   `password` varchar(43) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `id_UNIQUE` (`id`)
+  UNIQUE KEY `id_UNIQUE` (`id`),
+  KEY `fk_guardian_1_idx` (`account_id`),
+  CONSTRAINT `fk_guardian_1` FOREIGN KEY (`account_id`) REFERENCES `account` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -182,33 +187,36 @@ CREATE TABLE `kid` (
 
 LOCK TABLES `kid` WRITE;
 /*!40000 ALTER TABLE `kid` DISABLE KEYS */;
+INSERT INTO `kid` VALUES (1,'Richard','Grayson','2012-11-11',103,'Likes acrobatics'),(2,'Damian','Wayne','2013-02-27',103,'Hir to the mantle of the bat'),(3,'Jason','Todd','2012-08-16',103,'Aggressive'),(4,'Timothy','Drake','2012-06-23',103,'Smart'),(5,'Hal','Jordan','2012-02-20',101,'Likes green and to fly.'),(6,'Victor','Stone','2013-12-03',101,'Tech freak.'),(7,'Oliver','Queen','2013-05-08',101,'Very precise.'),(8,'Arthur','Qurry','2012-01-29',101,'Likes swimming.'),(9,'Lucifer','Morningstar','2011-12-31',102,'Kid\'s the devil.'),(10,'Tony','Stark','2012-05-29',102,'Rich and arogant.'),(11,'Peter','Parker','2013-06-27',102,'Nice kid. Likes spiders.'),(12,'Stiven','Strange','2012-07-19',102,'Want\'s to be a magician'),(13,'Thor','Odinson','2012-01-01',102,'Goldilocks'),(14,'Bruce','Banner','2012-12-18',102,'You wouldn\'t like him when he\'s angry.'),(15,'Steve','Rogers','2012-07-04',102,'Natural leader.'),(16,'Wade','Wilson','2012-11-22',102,'Wild'),(17,'James','Howlett','2012-09-27',102,'Wolverine');
 /*!40000 ALTER TABLE `kid` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `parent_guardian`
+-- Table structure for table `kid_guardian`
 --
 
-DROP TABLE IF EXISTS `parent_guardian`;
+DROP TABLE IF EXISTS `kid_guardian`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `parent_guardian` (
+CREATE TABLE `kid_guardian` (
   `guardian_id` int(11) NOT NULL,
   `kid_id` int(11) NOT NULL,
   `realtion` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`guardian_id`,`kid_id`),
-  UNIQUE KEY `guardian_id_UNIQUE` (`guardian_id`),
-  UNIQUE KEY `kid_id_UNIQUE` (`kid_id`)
+  KEY `fk_kid_guardian_2_idx` (`kid_id`),
+  CONSTRAINT `fk_kid_guardian_1` FOREIGN KEY (`guardian_id`) REFERENCES `guardian` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_kid_guardian_2` FOREIGN KEY (`kid_id`) REFERENCES `kid` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `parent_guardian`
+-- Dumping data for table `kid_guardian`
 --
 
-LOCK TABLES `parent_guardian` WRITE;
-/*!40000 ALTER TABLE `parent_guardian` DISABLE KEYS */;
-/*!40000 ALTER TABLE `parent_guardian` ENABLE KEYS */;
+LOCK TABLES `kid_guardian` WRITE;
+/*!40000 ALTER TABLE `kid_guardian` DISABLE KEYS */;
+INSERT INTO `kid_guardian` VALUES (1,5,'Father'),(1,6,'Father'),(1,7,'Father'),(1,8,'Father'),(1,9,'Father'),(2,5,'Mother'),(2,6,'Mother'),(2,7,'Mother'),(2,8,'Mother'),(2,9,'Mother'),(3,1,'Step-father'),(3,2,'Father'),(3,3,'Step-father'),(3,4,'Step-father'),(4,1,'Step-mother'),(4,2,'Step-mother'),(4,3,'Step-mother'),(4,4,'Step-mother'),(5,10,'Father'),(5,11,'Father'),(5,12,'Father'),(5,13,'Father'),(5,14,'Father'),(5,15,'Father'),(5,16,'Father'),(5,17,'Guardian'),(6,10,'Mother'),(6,11,'Mother'),(6,12,'Mother'),(6,13,'Mother'),(6,14,'Mother'),(6,15,'Mother'),(6,16,'Mother'),(6,17,'Guardian');
+/*!40000 ALTER TABLE `kid_guardian` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -219,14 +227,16 @@ DROP TABLE IF EXISTS `payment`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `payment` (
-  `id` int(11) NOT NULL,
-  `account_id` varchar(45) DEFAULT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `account_id` int(11) NOT NULL,
   `amount` double DEFAULT NULL,
   `date` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `comment` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  UNIQUE KEY `id_UNIQUE` (`id`),
+  KEY `fk_payment_1_idx` (`account_id`),
+  CONSTRAINT `fk_payment_1` FOREIGN KEY (`account_id`) REFERENCES `account` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -235,6 +245,7 @@ CREATE TABLE `payment` (
 
 LOCK TABLES `payment` WRITE;
 /*!40000 ALTER TABLE `payment` DISABLE KEYS */;
+INSERT INTO `payment` VALUES (3,10001,600,'2017-11-30 23:00:00',NULL),(4,10002,500,'2017-11-30 23:00:00',NULL),(5,10003,800,'2017-11-30 23:00:00',NULL);
 /*!40000 ALTER TABLE `payment` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -247,11 +258,12 @@ DROP TABLE IF EXISTS `teacher_group`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `teacher_group` (
   `teacher_id` int(11) NOT NULL,
-  `group_id` varchar(45) NOT NULL,
+  `group_id` int(11) NOT NULL,
   `comment` varchar(200) DEFAULT NULL,
   PRIMARY KEY (`teacher_id`,`group_id`),
-  UNIQUE KEY `teacher_id_UNIQUE` (`teacher_id`),
-  UNIQUE KEY `group_id_UNIQUE` (`group_id`)
+  KEY `fk_teacher_group_2_idx` (`group_id`),
+  CONSTRAINT `fk_teacher_group_1` FOREIGN KEY (`teacher_id`) REFERENCES `employee` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_teacher_group_2` FOREIGN KEY (`group_id`) REFERENCES `group` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -261,6 +273,7 @@ CREATE TABLE `teacher_group` (
 
 LOCK TABLES `teacher_group` WRITE;
 /*!40000 ALTER TABLE `teacher_group` DISABLE KEYS */;
+INSERT INTO `teacher_group` VALUES (11,101,'Shady business'),(11,102,'What? Wrong universe?'),(12,101,''),(12,102,NULL),(13,103,NULL);
 /*!40000 ALTER TABLE `teacher_group` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -273,4 +286,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-11-30 15:58:29
+-- Dump completed on 2017-12-01 11:01:32
