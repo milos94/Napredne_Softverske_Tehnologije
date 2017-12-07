@@ -1,15 +1,17 @@
 package com.milos.kindergarden.models;
 
-import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 
 @Entity
@@ -18,33 +20,31 @@ public class Account {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(columnDefinition = "INT(11)")
-	private Long ID;
+	private Long id;
 	
 	private double balance;
 	
 	private String comment;
 	
-	@OneToMany(mappedBy = "account", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	private List<Payment> payments;
+	@OneToMany(mappedBy = "acc", cascade = CascadeType.ALL)
+	@Fetch(value = FetchMode.SUBSELECT)
+	private Set<Payment> payments;
+	
+	@OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
+	@Fetch(value = FetchMode.SUBSELECT)
+	private Set<Guardian> guardians;
 	
 	public Account() {
 		
 	}
 
-	public Account(long iD, double balance, String comment, List<Payment> payments) {
+	public Account(long iD, double balance, String comment, Set<Payment> payments, Set<Guardian> guardians) {
 		super();
-		ID = iD;
+		id = iD;
 		this.balance = balance;
 		this.comment = comment;
 		this.payments = payments;
-	}
-
-	public long getID() {
-		return ID;
-	}
-
-	public void setID(long iD) {
-		ID = iD;
+		this.guardians = guardians;
 	}
 
 	public double getBalance() {
@@ -63,12 +63,28 @@ public class Account {
 		this.comment = comment;
 	}
 
-	public List<Payment> getPayments() {
+	public Set<Payment> getPayments() {
 		return payments;
 	}
 
-	public void setPayments(List<Payment> payments) {
+	public void setPayments(Set<Payment> payments) {
 		this.payments = payments;
+	}
+
+	public Set<Guardian> getGuardians() {
+		return guardians;
+	}
+
+	public void setGuardians(Set<Guardian> guardians) {
+		this.guardians = guardians;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 	
 }

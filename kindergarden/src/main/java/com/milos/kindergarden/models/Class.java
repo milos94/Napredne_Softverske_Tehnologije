@@ -1,32 +1,31 @@
 package com.milos.kindergarden.models;
 
-import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 @Entity
-@Table( name = "_group")
-public class Group {
+public class Class {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(columnDefinition = "INT(11)")
-	private Long ID;
+	private Long id;
 	
 	private String name;
 	
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "classroom_id")
 	private Classroom classroom;
 	
@@ -34,18 +33,17 @@ public class Group {
 	
 	private String comment;
 	
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@JoinTable(name = "teacher_group", joinColumns = @JoinColumn(name = "group_id", referencedColumnName = "id"),
-									inverseJoinColumns = @JoinColumn(name = "teacher_id", referencedColumnName = "id"))
-	List<Employee> teachers;
+	@ManyToMany( mappedBy = "classes"  ,cascade = CascadeType.ALL)
+	@Fetch(value = FetchMode.SUBSELECT)
+	Set<Employee> teachers;
 	
-	public Group() {
+	public Class() {
 		
 	}
 
-	public Group(long iD, String name, Classroom classroom, double price, String comment, List<Employee> teachers) {
+	public Class(long iD, String name, Classroom classroom, double price, String comment, Set<Employee> teachers) {
 		super();
-		ID = iD;
+		id = iD;
 		this.name = name;
 		this.classroom = classroom;
 		this.price = price;
@@ -53,12 +51,12 @@ public class Group {
 		this.teachers = teachers;
 	}
 
-	public long getID() {
-		return ID;
+	public Long getId() {
+		return id;
 	}
 
-	public void setID(long iD) {
-		ID = iD;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getName() {
@@ -93,11 +91,11 @@ public class Group {
 		this.comment = comment;
 	}
 
-	public List<Employee> getTeachers() {
+	public Set<Employee> getTeachers() {
 		return teachers;
 	}
 
-	public void setTeachers(List<Employee> teachers) {
+	public void setTeachers(Set<Employee> teachers) {
 		this.teachers = teachers;
 	}
 	

@@ -2,9 +2,9 @@ package com.milos.kindergarden.models;
 
 import java.time.LocalDateTime;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -21,16 +21,15 @@ public class Payment {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(columnDefinition = "INT(11)")
-	private Long ID;
+	private Long id;
 	
 	private double amount;
 	
-	@Column(columnDefinition = "TIMESTAMP")
 	private LocalDateTime date;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "account_id")
-	private Account account;
+	private Account acc;
 	
 	private String comment;
 	
@@ -38,21 +37,21 @@ public class Payment {
 		
 	}
 
-	public Payment(long iD, double amount, LocalDateTime date, Account account ,String comment) {
+	public Payment(Long id, double amount, LocalDateTime date, Account acc, String comment) {
 		super();
-		ID = iD;
+		this.id = id;
 		this.amount = amount;
 		this.date = date;
-		this.account = account;
+		this.acc = acc;
 		this.comment = comment;
 	}
 
-	public long getID() {
-		return ID;
+	public Long getId() {
+		return id;
 	}
 
-	public void setID(long iD) {
-		ID = iD;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public double getAmount() {
@@ -71,21 +70,20 @@ public class Payment {
 		this.date = date;
 	}
 
+	public Account getAcc() {
+		return acc;
+	}
+
+	public void setAcc(Account acc) {
+		this.acc = acc;
+	}
+
 	public String getComment() {
 		return comment;
 	}
 
 	public void setComment(String comment) {
 		this.comment = comment;
-	}
-
-	public Account getAccount() {
-		return account;
-	}
-
-	public void setAccount(Account account) {
-		this.account = account;
-	}
-	
+	}	
 		
 }

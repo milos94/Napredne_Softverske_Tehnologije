@@ -1,10 +1,17 @@
 package com.milos.kindergarden.models;
 
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 @Entity
 public class Classroom {
@@ -12,7 +19,11 @@ public class Classroom {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(columnDefinition = "INT(11)")
-	private Long ID;
+	private Long id;
+	
+	@OneToMany(mappedBy = "classroom", cascade = CascadeType.ALL)
+	@Fetch(value = FetchMode.SUBSELECT)
+	private Set<Class> classes;
 	
 	private String name;
 	
@@ -24,20 +35,13 @@ public class Classroom {
 		
 	}
 	
-	public Classroom(long iD, String name, int floor, int room_number) {
+	public Classroom(long iD, String name, int floor, int room_number, Set<Class> classes) {
 		super();
-		ID = iD;
+		id = iD;
 		this.name = name;
 		this.floor = floor;
 		this.room_number = room_number;
-	}
-
-	public long getID() {
-		return ID;
-	}
-
-	public void setID(long iD) {
-		ID = iD;
+		this.classes = classes;
 	}
 
 	public String getName() {
@@ -63,6 +67,21 @@ public class Classroom {
 	public void setRoom_number(int room_number) {
 		this.room_number = room_number;
 	}
-	
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Set<Class> getClasses() {
+		return classes;
+	}
+
+	public void setClasses(Set<Class> classes) {
+		this.classes = classes;
+	}
 	
 }

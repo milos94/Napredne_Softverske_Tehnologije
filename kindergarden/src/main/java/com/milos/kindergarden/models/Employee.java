@@ -1,12 +1,11 @@
 package com.milos.kindergarden.models;
 
 import java.time.LocalDate;
-import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -14,19 +13,21 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 @Entity
 public class Employee {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(columnDefinition = "INT(11)")
-	private Long ID;
+	private Long id;
 	
 	private String firstName;
 	
 	private String lastName;
 	
-	@Column(columnDefinition = "DATE")
 	private LocalDate dateOfEmployment;
 	
 	private double pay;
@@ -35,33 +36,38 @@ public class Employee {
 	
 	private String password;
 	
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@ManyToMany(cascade = CascadeType.ALL)
+	@Fetch(value = FetchMode.SUBSELECT)
 	@JoinTable(name = "teacher_group", joinColumns = @JoinColumn(name = "teacher_id", referencedColumnName = "id"),
 									inverseJoinColumns = @JoinColumn(name = "group_id", referencedColumnName = "id"))
-	List<Group> groups;
+	Set<Class> classes;
 	
 	private String comment;
-
-	public Employee(long iD, String firstName, String lastName, LocalDate dateOfEmployment, double pay, String type,
-			String password, List<Group> groups, String comment) {
+	
+	public Employee() {
+		
+	}
+	
+	public Employee(Long id, String firstName, String lastName, LocalDate dateOfEmployment, double pay, String type,
+			String password, Set<Class> classes, String comment) {
 		super();
-		ID = iD;
+		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.dateOfEmployment = dateOfEmployment;
 		this.pay = pay;
 		this.type = type;
 		this.password = password;
-		this.groups = groups;
+		this.classes = classes;
 		this.comment = comment;
 	}
 
-	public long getID() {
-		return ID;
+	public Long getId() {
+		return id;
 	}
 
-	public void setID(long iD) {
-		ID = iD;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getFirstName() {
@@ -111,13 +117,13 @@ public class Employee {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
-	public List<Group> getGroups() {
-		return groups;
+
+	public Set<Class> getClasses() {
+		return classes;
 	}
 
-	public void setGroups(List<Group> groups) {
-		this.groups = groups;
+	public void setClasses(Set<Class> classes) {
+		this.classes = classes;
 	}
 
 	public String getComment() {
@@ -127,6 +133,5 @@ public class Employee {
 	public void setComment(String comment) {
 		this.comment = comment;
 	}
-	
 	
 }

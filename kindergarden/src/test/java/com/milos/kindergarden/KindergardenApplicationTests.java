@@ -51,7 +51,6 @@ public class KindergardenApplicationTests {
 	
 	@Test
 	public void classroomRepositoryTest() {
-		
 		assertThat(classroomCrudRepositroy.findAll().size()).isGreaterThan(0);
 	}
 	

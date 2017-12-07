@@ -1,11 +1,10 @@
 package com.milos.kindergarden.models;
 
-import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -14,13 +13,16 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 @Entity
 public class Guardian {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(columnDefinition = "INT(11)")
-	private Long ID;
+	private Long id;
 	
 	private String firstName;
 	
@@ -31,13 +33,14 @@ public class Guardian {
 	private String password;
 	
 	@ManyToMany(cascade = CascadeType.ALL)
+	@Fetch(value = FetchMode.SUBSELECT)
 	@JoinTable(name = "kid_guardian", joinColumns = @JoinColumn(name = "guardian_id", referencedColumnName = "id"),
 										inverseJoinColumns = @JoinColumn(name = "kid_id", referencedColumnName = "id"))
-	List<Kid> kids;
+	Set<Kid> kids;
 	
 	private String comment;
 	
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "account_id")
 	private Account account;
 	
@@ -46,9 +49,9 @@ public class Guardian {
 	}
 	
 	public Guardian(long iD, String firstName, String lastName, String uMCN, Account account, String password,
-			List<Kid> kids, String comment) {
+			Set<Kid> kids, String comment) {
 		super();
-		ID = iD;
+		id = iD;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		UMCN = uMCN;
@@ -56,14 +59,6 @@ public class Guardian {
 		this.password = password;
 		this.kids = kids;
 		this.comment = comment;
-	}
-
-	public long getID() {
-		return ID;
-	}
-	
-	public void setID(long iD) {
-		ID = iD;
 	}
 	
 	public String getFirstName() {
@@ -98,11 +93,11 @@ public class Guardian {
 		this.password = password;
 	}
 	
-	public List<Kid> getKids() {
+	public Set<Kid> getKids() {
 		return kids;
 	}
 
-	public void setKids(List<Kid> kids) {
+	public void setKids(Set<Kid> kids) {
 		this.kids = kids;
 	}
 
@@ -122,4 +117,12 @@ public class Guardian {
 		this.account = account;
 	}
 
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+	
 }
