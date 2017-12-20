@@ -26,7 +26,7 @@ CREATE TABLE `account` (
   `id` int(11) NOT NULL,
   `balance` double DEFAULT NULL,
   `comment` varchar(200) DEFAULT NULL,
-  `last_payment` varchar(45) DEFAULT NULL,
+  `last_payment` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -38,8 +38,40 @@ CREATE TABLE `account` (
 
 LOCK TABLES `account` WRITE;
 /*!40000 ALTER TABLE `account` DISABLE KEYS */;
-INSERT INTO `account` VALUES (10001,0,'/','2017/12/01'),(10002,0,'/','2017/12/01'),(10003,0,'/','2017/12/01');
+INSERT INTO `account` VALUES (10001,0,'/','2017-12-01 00:00:00'),(10002,0,'/','2017-12-01 00:00:00'),(10003,0,'/','2017-12-01 00:00:00');
 /*!40000 ALTER TABLE `account` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `class`
+--
+
+DROP TABLE IF EXISTS `class`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `class` (
+  `id` int(11) NOT NULL,
+  `name` varchar(45) DEFAULT NULL,
+  `classroom_id` int(11) DEFAULT NULL,
+  `price` double DEFAULT NULL,
+  `comment` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`),
+  KEY `fk_group_1_idx` (`classroom_id`),
+  CONSTRAINT `FKh09ro1ulyn00cj74ehoqqib1w` FOREIGN KEY (`classroom_id`) REFERENCES `classroom` (`id`),
+  CONSTRAINT `FKi0ajnbbc8mckww8bun9sb7kiv` FOREIGN KEY (`classroom_id`) REFERENCES `classroom` (`id`),
+  CONSTRAINT `fk_group_1` FOREIGN KEY (`classroom_id`) REFERENCES `classroom` (`id`) ON DELETE SET NULL ON UPDATE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `class`
+--
+
+LOCK TABLES `class` WRITE;
+/*!40000 ALTER TABLE `class` DISABLE KEYS */;
+INSERT INTO `class` VALUES (101,'Justice League',1001,150,''),(102,'Avengers',1002,100,'Fun'),(103,'Bat Family',1003,100,'Dark and gloomy');
+/*!40000 ALTER TABLE `class` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -52,7 +84,7 @@ DROP TABLE IF EXISTS `classroom`;
 CREATE TABLE `classroom` (
   `id` int(11) NOT NULL,
   `name` varchar(45) NOT NULL,
-  `floor` smallint(6) NOT NULL,
+  `floor` int(6) NOT NULL,
   `room_number` int(11) NOT NULL,
   PRIMARY KEY (`id`,`name`,`floor`,`room_number`),
   UNIQUE KEY `id_UNIQUE` (`id`)
@@ -101,36 +133,6 @@ INSERT INTO `employee` VALUES (11,'Alexander','Luthor','Bald dude!','2004-07-12'
 UNLOCK TABLES;
 
 --
--- Table structure for table `group`
---
-
-DROP TABLE IF EXISTS `group`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `group` (
-  `id` int(11) NOT NULL,
-  `name` varchar(45) DEFAULT NULL,
-  `classroom_id` int(11) DEFAULT NULL,
-  `price` double DEFAULT NULL,
-  `comment` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `id_UNIQUE` (`id`),
-  KEY `fk_group_1_idx` (`classroom_id`),
-  CONSTRAINT `fk_group_1` FOREIGN KEY (`classroom_id`) REFERENCES `classroom` (`id`) ON DELETE SET NULL ON UPDATE SET NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `group`
---
-
-LOCK TABLES `group` WRITE;
-/*!40000 ALTER TABLE `group` DISABLE KEYS */;
-INSERT INTO `group` VALUES (101,'Justice League',1001,150,''),(102,'Avengers',1002,100,'Fun'),(103,'Bat Family',1003,100,'Dark and gloomy');
-/*!40000 ALTER TABLE `group` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `guardian`
 --
 
@@ -148,6 +150,7 @@ CREATE TABLE `guardian` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   KEY `fk_guardian_1_idx` (`account_id`),
+  CONSTRAINT `FKneps6pailesy9vjm5pq7vjf1w` FOREIGN KEY (`account_id`) REFERENCES `account` (`id`),
   CONSTRAINT `fk_guardian_1` FOREIGN KEY (`account_id`) REFERENCES `account` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -158,7 +161,7 @@ CREATE TABLE `guardian` (
 
 LOCK TABLES `guardian` WRITE;
 /*!40000 ALTER TABLE `guardian` DISABLE KEYS */;
-INSERT INTO `guardian` VALUES (1,'Clack','Kent','125496378946','Dude looks like Superman?',NULL,'cv66Cd1IrS10NlZwOVGUfc8wSSG1cFurAZZ0Y3ku9S8'),(2,'Louis','Lane','689534679125','Reporter',NULL,'q8+1Ox/wLYyIB0/tbYfLsCAWYagBXawIcLiizwkcqG8'),(3,'Bruce','Wayne','986574326498','Rich guy',NULL,'EcNq9+bqLS9pMOMS93ll+Zr9gtXHPOnLjLsUG0mFZ/Y'),(4,'Selina','Kayle','789456359715','Loves cats, stuff goes missing around her!',NULL,'NRaL6w5H9zTU0yY7M+fer5Tf0TTSeXzvUOhTp+q71os'),(5,'Barry','Allen','964587321648','Dude is always late.',NULL,'89MbzqVBsJd33L7Lr1PuRgViwzU18LXw+Ynr1HexmeQ'),(6,'Diana','Prince','986573154695','Damn!',NULL,'5LtMat0tofiaNN+Jmo+2JgGfQ7SUTDQKwY4VrzDHwlE');
+INSERT INTO `guardian` VALUES (1,'Clack','Kent','125496378946','Dude looks like Superman?',10001,'cv66Cd1IrS10NlZwOVGUfc8wSSG1cFurAZZ0Y3ku9S8'),(2,'Louis','Lane','689534679125','Reporter',10001,'q8+1Ox/wLYyIB0/tbYfLsCAWYagBXawIcLiizwkcqG8'),(3,'Bruce','Wayne','986574326498','Rich guy',10002,'EcNq9+bqLS9pMOMS93ll+Zr9gtXHPOnLjLsUG0mFZ/Y'),(4,'Selina','Kayle','789456359715','Loves cats, stuff goes missing around her!',10002,'NRaL6w5H9zTU0yY7M+fer5Tf0TTSeXzvUOhTp+q71os'),(5,'Barry','Allen','964587321648','Dude is always late.',10003,'89MbzqVBsJd33L7Lr1PuRgViwzU18LXw+Ynr1HexmeQ'),(6,'Diana','Prince','986573154695','Damn!',10003,'5LtMat0tofiaNN+Jmo+2JgGfQ7SUTDQKwY4VrzDHwlE');
 /*!40000 ALTER TABLE `guardian` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -177,7 +180,10 @@ CREATE TABLE `kid` (
   `group_id` int(11) NOT NULL,
   `comment` varchar(200) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `ID_UNIQUE` (`id`)
+  UNIQUE KEY `ID_UNIQUE` (`id`),
+  KEY `FKli62qpwa00nigp3rcl7ytcg78` (`group_id`),
+  CONSTRAINT `FKer16rq6ippdgmlouh84p9xuyv` FOREIGN KEY (`group_id`) REFERENCES `class` (`id`),
+  CONSTRAINT `FKli62qpwa00nigp3rcl7ytcg78` FOREIGN KEY (`group_id`) REFERENCES `class` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -204,6 +210,8 @@ CREATE TABLE `kid_guardian` (
   `realtion` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`guardian_id`,`kid_id`),
   KEY `fk_kid_guardian_2_idx` (`kid_id`),
+  CONSTRAINT `FK3cv6jx4lto2qki6wdmxi6h5i4` FOREIGN KEY (`guardian_id`) REFERENCES `guardian` (`id`),
+  CONSTRAINT `FK9wrdb7vyoduf55spp6yc6wwqg` FOREIGN KEY (`kid_id`) REFERENCES `kid` (`id`),
   CONSTRAINT `fk_kid_guardian_1` FOREIGN KEY (`guardian_id`) REFERENCES `guardian` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_kid_guardian_2` FOREIGN KEY (`kid_id`) REFERENCES `kid` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -235,6 +243,7 @@ CREATE TABLE `payment` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   KEY `fk_payment_1_idx` (`account_id`),
+  CONSTRAINT `FKqg9hvuj0jh5jkd3ejm3ibfn10` FOREIGN KEY (`account_id`) REFERENCES `account` (`id`),
   CONSTRAINT `fk_payment_1` FOREIGN KEY (`account_id`) REFERENCES `account` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -262,8 +271,11 @@ CREATE TABLE `teacher_group` (
   `comment` varchar(200) DEFAULT NULL,
   PRIMARY KEY (`teacher_id`,`group_id`),
   KEY `fk_teacher_group_2_idx` (`group_id`),
+  CONSTRAINT `FK13b2delxhk7mdfr8usc6i9hp2` FOREIGN KEY (`group_id`) REFERENCES `class` (`id`),
+  CONSTRAINT `FKdmtfmon4liop9gly77bge0599` FOREIGN KEY (`group_id`) REFERENCES `class` (`id`),
+  CONSTRAINT `FKjo79lnds05xp2gvmwetn1ftnt` FOREIGN KEY (`teacher_id`) REFERENCES `employee` (`id`),
   CONSTRAINT `fk_teacher_group_1` FOREIGN KEY (`teacher_id`) REFERENCES `employee` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `fk_teacher_group_2` FOREIGN KEY (`group_id`) REFERENCES `group` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `fk_teacher_group_2` FOREIGN KEY (`group_id`) REFERENCES `class` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -286,4 +298,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-12-01 11:01:32
+-- Dump completed on 2017-12-20 12:21:21
