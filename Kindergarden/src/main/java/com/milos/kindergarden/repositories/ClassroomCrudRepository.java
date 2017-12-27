@@ -9,4 +9,5 @@ import com.milos.kindergarden.models.Classroom;
 public interface ClassroomCrudRepository extends CrudRepository<Classroom, Long> {
 
 	List<Classroom> findAll();
+	Classroom findById(Long id);
 }

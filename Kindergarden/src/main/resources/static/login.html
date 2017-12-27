@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Log in</title>
 <style type="text/css">
 @import url(https://fonts.googleapis.com/css?family=Roboto:300);
 
@@ -110,16 +110,15 @@ body {
 <div class="login-page">
   <div class="form">
     <form class="register-form">
-      <input type="text" placeholder="name"/>
-      <input type="password" placeholder="password"/>
-      <input type="text" placeholder="email address"/>
+      <input type="text" name = "username" placeholder="name"/>
+      <input type="password" name = "password" placeholder="password"/>
       <button>create</button>
       <p class="message">Already registered? <a href="#">Sign In</a></p>
     </form>
-    <form class="login-form">
-      <input type="text" placeholder="username"/>
-      <input type="password" placeholder="password"/>
-      <button>login</button>
+    <form class="login-form" method="post">
+      <input type="text" name = "username" placeholder="name"/>
+      <input type="password" name = "password" placeholder="password"/>
+      <input type="submit" value="submit" name="submit" class="submit" />
       <p class="message">Not registered? <a href="#">Create an account</a></p>
     </form>
   </div>

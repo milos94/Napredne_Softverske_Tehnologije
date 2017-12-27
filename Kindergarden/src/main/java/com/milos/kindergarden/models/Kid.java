@@ -110,5 +110,5 @@ public class Kid {
 	public void setComment(String comment) {
 		this.comment = comment;
 	}
-
+	
 }

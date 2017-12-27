@@ -9,5 +9,5 @@ import com.milos.kindergarden.models.Payment;
 public interface PaymentCrudRepository extends CrudRepository<Payment, Long>{
 	
 	List<Payment> findAll();
-
+	Payment findById(Long id);
 }

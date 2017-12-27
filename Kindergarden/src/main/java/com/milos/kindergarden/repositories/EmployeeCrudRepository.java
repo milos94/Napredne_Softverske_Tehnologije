@@ -9,4 +9,6 @@ import com.milos.kindergarden.models.Employee;
 public interface EmployeeCrudRepository extends CrudRepository<Employee, Long>{
 	
 	List<Employee> findAll();
+	Employee findByFirstNameAndLastName(String firstName,String lastName);
+	Employee findById(Long id);
 }

@@ -8,7 +8,7 @@
     <meta name="description" content="" />
     <meta name="author" content="" />
 
-    <title>Emplyee page</title>
+    <title>Guardian page</title>
 
     <!-- Bootstrap core CSS -->
     <link th:href="@{vendor/bootstrap/css/bootstrap.min.css}"
@@ -55,16 +55,13 @@
             <a class="nav-link js-scroll-trigger" href="#experience">Kids</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="#education">Guardians</a>
-          </li>
-          <li class="nav-item">
             <a class="nav-link js-scroll-trigger" href="#skills">Accounts</a>
           </li>
           <li class="nav-item">
             <a class="nav-link js-scroll-trigger" href="#interests">Payments</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="#awards">Employees</a>
+            <a class="nav-link js-scroll-trigger" href="/logout">Log out</a>
           </li>
         </ul>
       </div>
@@ -75,7 +72,7 @@
           <h1 class="mb-0" th:text="${guardian.firstName} + ' ' + ${guardian.lastName}">
             <span class="text-primary"></span>
           </h1>
-          <p class="mb-5" th:text="${emp.comment}"></p>
+          <p class="mb-5" th:text="${guardian.comment}"></p>
           <ul class="list-inline list-social-icons mb-0">
             <li class="list-inline-item">
               <a href="#">
@@ -125,19 +122,15 @@
                 <th>Last name</th>
                 <th>Date of birth</th>
                 <th>Group</th>
-                <th>Guardian(s)</th>
                 <th>Comment</th>
               </thead>
               <tbody>
-              <tr th:each="kid : ${kids}">
+              <tr th:each="kid : ${guardian.kids}">
                 <td th:text = "${kid.id}"></td>
                 <td th:text = "${kid.firstName}"></td>
                 <td th:text = "${kid.lastName}"></td>
                 <td th:text = "${kid.dateOfBirth}"></td>
                 <td th:text = "${kid.group.name}"></td>
-                <td>
-                  <th:block th:each="guardian : ${kid.guardians}" th:text="${guardian.id} + ' '" />
-                </td>
                 <td th:text = "${kid.comment}"></td>
                </tr>
               </tbody>
@@ -185,7 +178,7 @@
               <th>Comment</th>
             </thead>
             <tbody>
-              <tr th:each = "payment : ${payments}">
+              <tr th:each = "payment : ${guardian.account.payments}">
                 <td th:text = "${payment.id}"></td>
                 <td th:text = "${payment.account.id}"></td>
                 <td th:text = "${payment.amount}"></td>

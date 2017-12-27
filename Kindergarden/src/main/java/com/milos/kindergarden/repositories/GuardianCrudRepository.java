@@ -11,5 +11,7 @@ import com.milos.kindergarden.models.Guardian;
 public interface GuardianCrudRepository extends CrudRepository<Guardian, Long>{
 	
 	public List<Guardian> findAll();
+	Guardian findByFirstNameAndLastName(String firstName, String lastName);
+	Guardian findById(Long id);
 
 }

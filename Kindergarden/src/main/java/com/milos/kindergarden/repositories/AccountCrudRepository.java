@@ -9,6 +9,5 @@ import com.milos.kindergarden.models.Account;
 public interface AccountCrudRepository extends CrudRepository<Account, Long> {
 
 	List<Account> findAll();
-	//Account findByID(Long id);
-	//Account findOne();
+	Account findById(Long id);
 }
