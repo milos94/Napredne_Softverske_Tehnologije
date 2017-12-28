@@ -1,7 +1,9 @@
 package com.milos.kindergarden.serviceimplemtations;
 
+import java.util.Collections;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.milos.kindergarden.models.Classroom;
@@ -24,10 +26,10 @@ public class ClassroomServiceImpl implements ClassroomService {
 
 	}
 	
-	public ClassroomServiceImpl(ClassroomCrudRepository repository, List<Classroom> classrooms) {
+	@Autowired
+	public ClassroomServiceImpl(ClassroomCrudRepository repository) {
 		super();
 		this.repository = repository;
-		this.classrooms = classrooms;
 	}
 
 	public ClassroomCrudRepository getRepository() {
@@ -59,8 +61,27 @@ public class ClassroomServiceImpl implements ClassroomService {
 			return repository.findById(id);
 		}
 		return classrooms.stream()
-				.filter(clss -> clss.getId() == id)
+				.filter(clss -> clss.getId().equals(id))
 				.findFirst().orElse(null);
 	}
 
+	@Override
+	public Classroom save(Classroom newClassrom) {
+		Classroom clsroom = classrooms.stream()
+										.filter(cls -> cls.getId().equals(newClassrom.getId()))
+										.findFirst().orElse(null);
+		if(clsroom == null) {
+			classrooms.add(newClassrom);
+		}
+		else {
+			Collections.replaceAll(classrooms, clsroom, newClassrom);
+		}
+		return repository.save(newClassrom);
+	}
+	
+	@Override
+	public void delete(Classroom classroom) {
+		classrooms.remove(classroom);
+		repository.delete(classroom);
+	}
 }

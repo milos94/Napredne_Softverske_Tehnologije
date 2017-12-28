@@ -10,4 +10,7 @@ public interface AccountService {
 	
 	Account findById(Long id);
 	
+	Account save(Account newAccount);
+	
+	void delete(Account account);
 }

@@ -23,13 +23,13 @@ DROP TABLE IF EXISTS `account`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `account` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `balance` double DEFAULT NULL,
   `comment` varchar(200) DEFAULT NULL,
   `last_payment` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=10004 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -50,16 +50,16 @@ DROP TABLE IF EXISTS `class`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `class` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(45) DEFAULT NULL,
   `classroom_id` int(11) DEFAULT NULL,
   `price` double DEFAULT NULL,
   `comment` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
-  KEY `fk_group_1_idx` (`classroom_id`),
-  CONSTRAINT `fk_group_1` FOREIGN KEY (`classroom_id`) REFERENCES `classroom` (`id`) ON DELETE SET NULL ON UPDATE SET NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  KEY `fk_class_1_idx` (`classroom_id`),
+  CONSTRAINT `fk_class_1` FOREIGN KEY (`classroom_id`) REFERENCES `classroom` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=104 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -80,13 +80,13 @@ DROP TABLE IF EXISTS `classroom`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `classroom` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(45) NOT NULL,
   `floor` int(6) NOT NULL,
   `room_number` int(11) NOT NULL,
   PRIMARY KEY (`id`,`name`,`floor`,`room_number`),
   UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1004 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -107,7 +107,7 @@ DROP TABLE IF EXISTS `employee`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `employee` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `first_name` varchar(45) DEFAULT NULL,
   `last_name` varchar(45) DEFAULT NULL,
   `comment` varchar(200) DEFAULT '/',
@@ -117,7 +117,7 @@ CREATE TABLE `employee` (
   `password` varchar(43) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -138,7 +138,7 @@ DROP TABLE IF EXISTS `guardian`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `guardian` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `first_name` varchar(45) DEFAULT NULL,
   `last_name` varchar(45) DEFAULT NULL,
   `UMCN` varchar(12) DEFAULT NULL,
@@ -148,8 +148,8 @@ CREATE TABLE `guardian` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   KEY `fk_guardian_1_idx` (`account_id`),
-  CONSTRAINT `fk_guardian_1` FOREIGN KEY (`account_id`) REFERENCES `account` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  CONSTRAINT `fk_guardian_1` FOREIGN KEY (`account_id`) REFERENCES `account` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -170,7 +170,7 @@ DROP TABLE IF EXISTS `kid`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `kid` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `first_name` varchar(45) DEFAULT NULL,
   `last_name` varchar(45) DEFAULT NULL,
   `date_of_birth` date DEFAULT NULL,
@@ -180,7 +180,7 @@ CREATE TABLE `kid` (
   UNIQUE KEY `ID_UNIQUE` (`id`),
   KEY `fk_kid_1_idx` (`group_id`),
   CONSTRAINT `fk_kid_1` FOREIGN KEY (`group_id`) REFERENCES `class` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -189,7 +189,7 @@ CREATE TABLE `kid` (
 
 LOCK TABLES `kid` WRITE;
 /*!40000 ALTER TABLE `kid` DISABLE KEYS */;
-INSERT INTO `kid` VALUES (1,'Richard','Grayson','2012-11-11',103,'Likes acrobatics'),(2,'Damian','Wayne','2013-02-27',103,'Hir to the mantle of the bat'),(3,'Jason','Todd','2012-08-16',103,'Aggressive'),(4,'Timothy','Drake','2012-06-23',103,'Smart'),(5,'Hal','Jordan','2012-02-20',101,'Likes green and to fly.'),(6,'Victor','Stone','2013-12-03',101,'Tech freak.'),(7,'Oliver','Queen','2013-05-08',101,'Very precise.'),(8,'Arthur','Qurry','2012-01-29',101,'Likes swimming.'),(9,'Lucifer','Morningstar','2011-12-31',102,'Kid\'s the devil.'),(10,'Tony','Stark','2012-05-29',102,'Rich and arogant.'),(11,'Peter','Parker','2013-06-27',102,'Nice kid. Likes spiders.'),(12,'Stiven','Strange','2012-07-19',102,'Want\'s to be a magician'),(13,'Thor','Odinson','2012-01-01',102,'Goldilocks'),(14,'Bruce','Banner','2012-12-18',102,'You wouldn\'t like him when he\'s angry.'),(15,'Steve','Rogers','2012-07-04',102,'Natural leader.'),(16,'Wade','Wilson','2012-11-22',102,'Wild'),(17,'James','Howlett','2012-09-27',102,'Wolverine');
+INSERT INTO `kid` VALUES (1,'Richard','Grayson','2012-11-11',101,'Likes Acrobatics'),(2,'Damian','Wayne','2013-02-27',103,'Hir to the mantle of the bat'),(3,'Jason','Todd','2012-08-16',103,'Aggressive'),(4,'Timothy','Drake','2012-06-23',103,'Smart'),(5,'Hal','Jordan','2012-02-20',101,'Likes green and to fly.'),(6,'Victor','Stone','2013-12-03',101,'Tech freak.'),(7,'Oliver','Queen','2013-05-08',101,'Very precise.'),(8,'Arthur','Qurry','2012-01-29',101,'Likes swimming.'),(9,'Lucifer','Morningstar','2011-12-31',102,'Kid\'s the devil.'),(10,'Tony','Stark','2012-05-29',102,'Rich and arogant.'),(11,'Peter','Parker','2013-06-27',102,'Nice kid. Likes spiders.'),(12,'Stiven','Strange','2012-07-19',102,'Want\'s to be a magician'),(13,'Thor','Odinson','2012-01-01',102,'Goldilocks'),(14,'Bruce','Banner','2012-12-18',102,'You wouldn\'t like him when he\'s angry.'),(15,'Steve','Rogers','2012-07-04',102,'Natural leader.'),(16,'Wade','Wilson','2012-11-22',102,'Wild'),(17,'James','Howlett','2012-09-27',102,'Wolverine'),(18,'Jon','Snow','2017-12-11',101,'King in the north');
 /*!40000 ALTER TABLE `kid` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -206,8 +206,8 @@ CREATE TABLE `kid_guardian` (
   `realtion` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`guardian_id`,`kid_id`),
   KEY `fk_kid_guardian_2_idx` (`kid_id`),
-  CONSTRAINT `fk_kid_guardian_1` FOREIGN KEY (`guardian_id`) REFERENCES `guardian` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `fk_kid_guardian_2` FOREIGN KEY (`kid_id`) REFERENCES `kid` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `fk_kid_guardian_1` FOREIGN KEY (`guardian_id`) REFERENCES `guardian` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_kid_guardian_2` FOREIGN KEY (`kid_id`) REFERENCES `kid` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -264,8 +264,8 @@ CREATE TABLE `teacher_group` (
   `comment` varchar(200) DEFAULT NULL,
   PRIMARY KEY (`teacher_id`,`group_id`),
   KEY `fk_teacher_group_2_idx` (`group_id`),
-  CONSTRAINT `fk_teacher_group_1` FOREIGN KEY (`teacher_id`) REFERENCES `employee` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `fk_teacher_group_2` FOREIGN KEY (`group_id`) REFERENCES `class` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `fk_teacher_group_1` FOREIGN KEY (`teacher_id`) REFERENCES `employee` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_teacher_group_2` FOREIGN KEY (`group_id`) REFERENCES `class` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -288,4 +288,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-12-27 11:55:07
+-- Dump completed on 2017-12-28 15:35:21

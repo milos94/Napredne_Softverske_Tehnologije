@@ -30,6 +30,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 			.antMatchers("/teacher","/teacher/**").hasRole("TEACHER")
 			.antMatchers("/guardian").hasRole("GUARDIAN")
 			.anyRequest().authenticated()
+			.and().exceptionHandling().accessDeniedPage("/403.html")
 			.and().formLogin().loginPage("/login.html")
 			.and().logout().logoutUrl("/logout").logoutSuccessUrl("/")
 			.and().csrf().disable();

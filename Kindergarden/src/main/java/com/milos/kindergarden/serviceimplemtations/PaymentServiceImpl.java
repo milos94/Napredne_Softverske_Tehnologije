@@ -1,15 +1,17 @@
 package com.milos.kindergarden.serviceimplemtations;
 
+import java.util.Collections;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.milos.kindergarden.models.Payment;
 import com.milos.kindergarden.repositories.PaymentCrudRepository;
-import com.milos.kindergarden.services.PaymenyService;
+import com.milos.kindergarden.services.PaymentService;
 
 @Service
-public class PaymentServiceImpl implements PaymenyService {
+public class PaymentServiceImpl implements PaymentService {
 	
 	private PaymentCrudRepository repository;
 	private List<Payment> payments;
@@ -24,10 +26,10 @@ public class PaymentServiceImpl implements PaymenyService {
 
 	}
 
-	public PaymentServiceImpl(PaymentCrudRepository repositroy, List<Payment> payments) {
+	@Autowired
+	public PaymentServiceImpl(PaymentCrudRepository repositroy) {
 		super();
 		this.repository = repositroy;
-		this.payments = payments;
 	}
 
 	public PaymentCrudRepository getRepositroy() {
@@ -63,8 +65,28 @@ public class PaymentServiceImpl implements PaymenyService {
 			return repository.findById(id);
 		}
 		return payments.stream()
-				.filter(pay -> pay.getId() == id)
+				.filter(pay -> pay.getId().equals(id))
 				.findFirst().orElse(null);
 	}
 
+	@Override
+	public Payment save(Payment newPayment) {
+		Payment pay = payments.stream()
+								.filter(p-> p.getId().equals(newPayment.getId()))
+								.findFirst().orElse(null);
+		if(pay == null) {
+			payments.add(newPayment);
+		}
+		else {
+			Collections.replaceAll(payments, pay, newPayment);
+		}
+							
+		return repository.save(newPayment);
+	}
+	
+	@Override
+	public void delete(Payment payment) {
+		payments.remove(payment);
+		repository.delete(payment);
+	}
 }

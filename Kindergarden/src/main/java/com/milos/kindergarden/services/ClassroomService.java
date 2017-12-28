@@ -9,4 +9,8 @@ public interface ClassroomService {
 	List<Classroom> findAll();
 	
 	Classroom findById(Long id);
+	
+	Classroom save(Classroom newClassrom);
+	
+	void delete(Classroom clasroom);
 }

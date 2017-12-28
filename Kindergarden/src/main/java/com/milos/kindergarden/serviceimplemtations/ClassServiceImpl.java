@@ -3,8 +3,10 @@ package com.milos.kindergarden.serviceimplemtations;
 import com.milos.kindergarden.repositories.ClassCrudRepository;
 import com.milos.kindergarden.services.ClassService;
 
+import java.util.Collections;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.milos.kindergarden.models.Class;
@@ -25,10 +27,10 @@ public class ClassServiceImpl implements ClassService {
 
 	}
 
-	public ClassServiceImpl(ClassCrudRepository repository, List<Class> classes) {
+	@Autowired
+	public ClassServiceImpl(ClassCrudRepository repository) {
 		super();
 		this.repository = repository;
-		this.classes = classes;
 	}
 
 	public ClassCrudRepository getRepository() {
@@ -64,7 +66,7 @@ public class ClassServiceImpl implements ClassService {
 			return repository.findById(id);
 		}
 		return classes.stream()
-				.filter(cls -> cls.getId() == id)
+				.filter(cls -> cls.getId().equals(id))
 				.findFirst().orElse(null);
 	}
 
@@ -78,4 +80,24 @@ public class ClassServiceImpl implements ClassService {
 				.findFirst().orElse(null);
 	}
 
+	@Override
+	public Class save(Class newClass) {
+		Class cls = classes.stream()
+							.filter(cl -> cl.getId().equals(newClass.getId()))
+							.findFirst().orElse(null);
+		if(cls == null) {
+			classes.add(cls);
+		}
+		else {
+			Collections.replaceAll(classes, cls, newClass);
+		}
+		
+		return repository.save(newClass);
+	}
+	
+	@Override
+	public void delete(Class clas) {
+		classes.remove(clas);
+		repository.delete(clas);
+	}
 }

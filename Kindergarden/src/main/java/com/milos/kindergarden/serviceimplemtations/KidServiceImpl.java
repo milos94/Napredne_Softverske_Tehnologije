@@ -1,7 +1,9 @@
 package com.milos.kindergarden.serviceimplemtations;
 
+import java.util.Collections;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.milos.kindergarden.models.Kid;
@@ -24,10 +26,10 @@ public class KidServiceImpl implements KidService {
 
 	}
 	
-	public KidServiceImpl(KidCrudRepository repository, List<Kid> kids) {
+	@Autowired
+	public KidServiceImpl(KidCrudRepository repository) {
 		super();
 		this.repository = repository;
-		this.kids = kids;
 	}
 
 	public KidCrudRepository getRepository() {
@@ -63,7 +65,27 @@ public class KidServiceImpl implements KidService {
 			return repository.findById(id);
 		}
 		return kids.stream()
-				.filter(kid -> kid.getId() == id)
+				.filter(kid -> kid.getId().equals(id))
 				.findFirst().orElse(null);
+	}
+
+	@Override
+	public Kid save(Kid newKid) {
+		Kid kid = kids.stream().filter(kk -> kk.getId().equals(newKid.getId())).findFirst().orElse(null);
+		
+		if(kid == null) {
+			kids.add(newKid);
+		}
+		else {
+			Collections.replaceAll(kids, kid, newKid);
+		}
+		
+		return repository.save(newKid);
+	}
+	
+	@Override
+	public void delete(Kid kid) {
+		kids.remove(kid);
+		repository.delete(kid);
 	}
 }

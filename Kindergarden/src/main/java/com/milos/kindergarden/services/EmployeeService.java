@@ -11,4 +11,8 @@ public interface EmployeeService {
 	Employee findByFirstNameAndLastName(String firstName, String lastName);
 
 	Employee findById(Long id);
+	
+	Employee save(Employee newEmployee);
+	
+	void delete(Employee employee);
 }

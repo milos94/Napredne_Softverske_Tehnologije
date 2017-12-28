@@ -1,7 +1,9 @@
 package com.milos.kindergarden.serviceimplemtations;
 
+import java.util.Collections;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.milos.kindergarden.models.Account;
@@ -23,11 +25,11 @@ public class AccountServiceImpl implements AccountService {
 	public AccountServiceImpl() {
 
 	}
-
-	public AccountServiceImpl(AccountCrudRepository repository, List<Account> accounts) {
+	
+	@Autowired
+	public AccountServiceImpl(AccountCrudRepository repository) {
 		super();
-		this.repository = repository;
-		this.accounts = accounts;
+		this.repository = repository;;
 	}
 
 	public List<Account> getAccounts() {
@@ -59,9 +61,30 @@ public class AccountServiceImpl implements AccountService {
 		if(accounts == null) {
 			return repository.findById(id);
 		}
-		return accounts.stream().filter(acc -> acc.getId() == id).findFirst().get();
+		return accounts.stream()
+				.filter(acc -> acc.getId().equals(id))
+				.findFirst().orElse(null);
+	}
+
+	@Override
+	public Account save(Account newAccount) {
+		Account acc = accounts.stream()
+								.filter(ac -> ac.getId().equals(newAccount.getId()))
+								.findFirst().orElse(null);
+		if(acc == null) {
+			accounts.add(newAccount);
+		}
+		else {
+			Collections.replaceAll(accounts, acc, newAccount);
+		}
+		return repository.save(newAccount);
 	}
 	
+	@Override
+	public void delete(Account account) {
+		accounts.remove(account);
+		repository.delete(account);
+	}
 	
 
 }

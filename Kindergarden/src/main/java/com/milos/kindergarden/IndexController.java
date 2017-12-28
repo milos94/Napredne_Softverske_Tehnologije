@@ -11,7 +11,6 @@ import com.milos.kindergarden.security.GuardianUserDetails;
 @Controller
 public class IndexController {
 	
-	
 	@RequestMapping(value = {"/","/index"}, method = RequestMethod.GET)
 	public String indexPage(Model model) {
 		return "index";

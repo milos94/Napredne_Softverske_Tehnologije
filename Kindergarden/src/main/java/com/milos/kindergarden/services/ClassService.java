@@ -11,5 +11,9 @@ public interface ClassService {
 	Class findById(Long id);
 	
 	Class findByName(String name);
+	
+	Class save(Class newClass);
+	
+	void delete(Class clas);
 
 }

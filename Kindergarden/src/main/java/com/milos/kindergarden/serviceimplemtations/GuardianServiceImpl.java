@@ -1,5 +1,6 @@
 package com.milos.kindergarden.serviceimplemtations;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,10 +75,28 @@ public class GuardianServiceImpl implements GuardianService {
 	@Override
 	public Guardian findById(Long id) {
 		return guardians.stream()
-				.filter(guard -> guard.getId() == id)
+				.filter(guard -> guard.getId().equals(id))
 				.findFirst().orElse(null);
 	}
-	
 
+	@Override
+	public Guardian save(Guardian newGuardian) {
+		Guardian guard = guardians.stream()
+									.filter(e -> e.getId().equals(newGuardian.getId()))
+									.findFirst().orElse(null);
+		if(guard == null) {
+			guardians.add(newGuardian);
+		}
+		else {
+			Collections.replaceAll(guardians, guard, newGuardian);
+		}
+		return repository.save(newGuardian);
+	}
+	
+	@Override
+	public void delete(Guardian guardian) {
+		guardians.remove(guardian);
+		repository.delete(guardian);
+	}
 	
 }

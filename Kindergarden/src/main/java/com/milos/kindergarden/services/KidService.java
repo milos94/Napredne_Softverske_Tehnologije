@@ -9,4 +9,8 @@ public interface KidService {
 	List<Kid> findAll();
 	
 	Kid findById(Long id);
+	
+	Kid save(Kid kid);
+	
+	void delete(Kid kid);
 }

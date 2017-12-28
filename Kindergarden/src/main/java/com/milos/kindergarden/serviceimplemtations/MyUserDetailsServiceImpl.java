@@ -18,7 +18,7 @@ public class MyUserDetailsServiceImpl implements UserDetailsService {
 	private GuardianService guardianRepository;
 	
 	private EmployeeService employeeCrudRepository;
-
+	
 	public MyUserDetailsServiceImpl(GuardianService guardianRepository, EmployeeService employeeCrudRepository) {
 		super();
 		this.guardianRepository = guardianRepository;
@@ -41,7 +41,7 @@ public class MyUserDetailsServiceImpl implements UserDetailsService {
 		}
 		return new GuardianUserDetails(guard);
 	}
-
+	
 	public GuardianService getGuardianRepository() {
 		return guardianRepository;
 	}
@@ -57,5 +57,6 @@ public class MyUserDetailsServiceImpl implements UserDetailsService {
 	public void setEmployeeCrudRepository(EmployeeService employeeCrudRepository) {
 		this.employeeCrudRepository = employeeCrudRepository;
 	}
-
+	
+	
 }

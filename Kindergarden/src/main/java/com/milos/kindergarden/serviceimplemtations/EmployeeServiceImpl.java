@@ -1,5 +1,6 @@
 package com.milos.kindergarden.serviceimplemtations;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,8 +77,28 @@ public class EmployeeServiceImpl implements EmployeeService {
 			return repository.findById(id);
 		}
 		return employees.stream()
-				.filter(empl -> empl.getId() == id)
+				.filter(empl -> empl.getId().equals(id))
 				.findFirst().orElse(null);
+	}
+
+	@Override
+	public Employee save(Employee newEmployee) {
+		Employee emp = employees.stream()
+									.filter(em -> em.getId().equals(newEmployee.getId()))
+									.findFirst().orElse(null);
+		if(emp == null) {
+			employees.add(newEmployee);
+		}
+		else {
+			Collections.replaceAll(employees, emp, newEmployee);
+		}
+		return repository.save(newEmployee);
+	}
+	
+	@Override
+	public void delete(Employee employee) {
+		employees.remove(employee);
+		repository.delete(employee);
 	}
 	
 }
