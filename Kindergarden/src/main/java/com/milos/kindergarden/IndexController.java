@@ -1,5 +1,8 @@
 package com.milos.kindergarden;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,7 +15,12 @@ import com.milos.kindergarden.security.GuardianUserDetails;
 public class IndexController {
 	
 	@RequestMapping(value = {"/","/index"}, method = RequestMethod.GET)
-	public String indexPage(Model model) {
+	public String indexPage(HttpServletRequest request) {
+		HttpSession session = request.getSession(false);
+		SecurityContextHolder.clearContext();
+		if(session != null) {
+			session.invalidate();
+		}
 		return "index";
 	}
 	

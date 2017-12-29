@@ -29,7 +29,7 @@ CREATE TABLE `account` (
   `last_payment` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10004 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=10005 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -58,7 +58,7 @@ CREATE TABLE `class` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   KEY `fk_class_1_idx` (`classroom_id`),
-  CONSTRAINT `fk_class_1` FOREIGN KEY (`classroom_id`) REFERENCES `classroom` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `fk_class_1` FOREIGN KEY (`classroom_id`) REFERENCES `classroom` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=104 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -148,7 +148,7 @@ CREATE TABLE `guardian` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   KEY `fk_guardian_1_idx` (`account_id`),
-  CONSTRAINT `fk_guardian_1` FOREIGN KEY (`account_id`) REFERENCES `account` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `fk_guardian_1` FOREIGN KEY (`account_id`) REFERENCES `account` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -174,12 +174,12 @@ CREATE TABLE `kid` (
   `first_name` varchar(45) DEFAULT NULL,
   `last_name` varchar(45) DEFAULT NULL,
   `date_of_birth` date DEFAULT NULL,
-  `group_id` int(11) NOT NULL,
+  `group_id` int(11) DEFAULT NULL,
   `comment` varchar(200) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `ID_UNIQUE` (`id`),
   KEY `fk_kid_1_idx` (`group_id`),
-  CONSTRAINT `fk_kid_1` FOREIGN KEY (`group_id`) REFERENCES `class` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `fk_kid_1` FOREIGN KEY (`group_id`) REFERENCES `class` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -206,8 +206,8 @@ CREATE TABLE `kid_guardian` (
   `realtion` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`guardian_id`,`kid_id`),
   KEY `fk_kid_guardian_2_idx` (`kid_id`),
-  CONSTRAINT `fk_kid_guardian_1` FOREIGN KEY (`guardian_id`) REFERENCES `guardian` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_kid_guardian_2` FOREIGN KEY (`kid_id`) REFERENCES `kid` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `fk_kid_guardian_1` FOREIGN KEY (`guardian_id`) REFERENCES `guardian` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_kid_guardian_2` FOREIGN KEY (`kid_id`) REFERENCES `kid` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -230,15 +230,15 @@ DROP TABLE IF EXISTS `payment`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `payment` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `account_id` int(11) NOT NULL,
+  `account_id` int(11) DEFAULT NULL,
   `amount` double DEFAULT NULL,
   `date` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `comment` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   KEY `fk_payment_1_idx` (`account_id`),
-  CONSTRAINT `fk_payment_1` FOREIGN KEY (`account_id`) REFERENCES `account` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+  CONSTRAINT `fk_payment_1` FOREIGN KEY (`account_id`) REFERENCES `account` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -264,8 +264,8 @@ CREATE TABLE `teacher_group` (
   `comment` varchar(200) DEFAULT NULL,
   PRIMARY KEY (`teacher_id`,`group_id`),
   KEY `fk_teacher_group_2_idx` (`group_id`),
-  CONSTRAINT `fk_teacher_group_1` FOREIGN KEY (`teacher_id`) REFERENCES `employee` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_teacher_group_2` FOREIGN KEY (`group_id`) REFERENCES `class` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `fk_teacher_group_1` FOREIGN KEY (`teacher_id`) REFERENCES `employee` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_teacher_group_2` FOREIGN KEY (`group_id`) REFERENCES `class` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -288,4 +288,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-12-28 15:35:21
+-- Dump completed on 2017-12-29 11:29:14

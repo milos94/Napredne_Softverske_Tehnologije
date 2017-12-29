@@ -1,6 +1,9 @@
 package com.milos.kindergarden;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -16,7 +19,6 @@ import com.milos.kindergarden.models.Employee;
 import com.milos.kindergarden.models.Guardian;
 import com.milos.kindergarden.models.Kid;
 import com.milos.kindergarden.models.Payment;
-import com.milos.kindergarden.repositories.KidCrudRepository;
 import com.milos.kindergarden.security.EmployeeUserDetails;
 import com.milos.kindergarden.services.AccountService;
 import com.milos.kindergarden.services.ClassService;
@@ -74,7 +76,7 @@ public class EmployeeController {
 						@RequestParam(value = "date", required = true) String dateOfBirth,
 						@RequestParam(value = "groupId", required = true) Long groupId,
 						Model model) {
-		
+
 		kid.setDateOfBirth(LocalDate.parse(dateOfBirth));
 		kid.setGroup(classService.findById(groupId));
 		kidService.save(kid);
@@ -84,15 +86,127 @@ public class EmployeeController {
 	
 	@RequestMapping(value = "/addGuardian", method = RequestMethod.POST)
 	public String addGuardian(@ModelAttribute(value = "newGuardian") Guardian guardian,
-							@RequestParam(value = "accountId", required = true) String accountId,
+							@RequestParam(value = "accountId", required = true) Long accountId,
 							Model model) {
-		
+		guardian.setAccount(accountService.findById(accountId));
+		guardianService.save(guardian);
+		model.addAttribute("newGuardian", new Guardian());
+		return "employee_page";
+	}
+	
+	@RequestMapping(value = "/addAccount", method = RequestMethod.POST)
+	public String addAccount(@ModelAttribute(value = "newAccount") Account account, Model model) {
+		accountService.save(account);
+		model.addAttribute("newAccount", new Account());
+		return "employee_page";
+	}
+	
+	@RequestMapping(value = "/addPayment", method = RequestMethod.POST)
+	public String addPayment(@ModelAttribute(value = "newPayment") Payment payment,
+							@RequestParam(value = "date", required = true) String date,
+							@RequestParam(value = "time", required = true) String time,
+							@RequestParam(value = "accountId", required = true) Long accountId,
+							Model model) {
+		if(date.equals("")) {
+			date = LocalDate.now().toString();
+		}
+		if(time.equals("")) {
+			time = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm"));
+		}
+		payment.setDate(LocalDateTime.parse(date + 'T' + time));
+		payment.setAccount(accountService.findById(accountId));
+		paymentService.save(payment);
+		model.addAttribute("newPayment", new Payment());
+		return "employee_page";
+	}
+	
+	@RequestMapping(value = "/addEmployee", method = RequestMethod.POST)
+	public String addEmployee(@ModelAttribute(value = "newEmployee") Employee employee,
+							@RequestParam(value = "date", required = true) String date,
+							Model model) {
+		if(date.equals("")) {
+			employee.setDateOfEmployment(LocalDate.now());
+		}
+		else {
+			employee.setDateOfEmployment(LocalDate.parse(date));
+		}
+		employeeService.save(employee);
+		model.addAttribute("newEmployee", new Employee());
+		return "employee_page";
+	}
+	
+	@RequestMapping(value = "/selectGuardian", method = RequestMethod.GET)
+	public String selectGuardian(@RequestParam(value = "id", required = true) Long id, Model model) {
+		model.addAttribute("newGuardian", guardianService.findById(id));
+		return "employee_page";
+	}
+	
+	@RequestMapping(value = "/deleteGuardian", method = RequestMethod.GET)
+	public String deleteGuardian(@RequestParam(value = "id", required = true) Long id, Model model) {
+		guardianService.delete(guardianService.findById(id));
+		return "employee_page";
+	}
+	
+	@RequestMapping(value = "/selectAccount", method = RequestMethod.GET)
+	public String selectAccount(@RequestParam(value = "id", required = true) Long id, Model model) {
+		model.addAttribute("newAccount", accountService.findById(id));
+		return "employee_page";
+	}
+	
+	@RequestMapping(value = "/deleteAccount", method = RequestMethod.GET)
+	public String deleteAccount(@RequestParam(value = "id", required = true) Long id, Model model) {
+		accountService.delete(accountService.findById(id));
+		return "employee_page";
+	}
+	
+	@RequestMapping(value = "/selectPayment", method = RequestMethod.GET)
+	public String selectpayment(@RequestParam(value = "id", required = true) Long id, Model model) {
+		model.addAttribute("newPayment", paymentService.findById(id));
+		return "employee_page";
+	}
+	
+	@RequestMapping(value = "/deletePayment", method = RequestMethod.GET)
+	public String deletePayment(@RequestParam(value = "id", required = true) Long id, Model model) {
+		paymentService.delete(paymentService.findById(id));
+		return "employee_page";
+	}
+	
+	@RequestMapping(value = "/selectEmployee", method = RequestMethod.GET)
+	public String selectEmployee(@RequestParam(value = "id", required = true) Long id, Model model) {
+		model.addAttribute("newEmployee", employeeService.findById(id));
+		return "employee_page";
+	}
+	
+	@RequestMapping(value = "/deleteEmployee", method = RequestMethod.GET)
+	public String deleteEmployee(@RequestParam(value = "id", required = true) Long id, Model model) {
+		employeeService.delete(employeeService.findById(id));
 		return "employee_page";
 	}
 	
 	@RequestMapping(value = "/selectKid", method = RequestMethod.GET)
 	public String selectKid(@RequestParam(value = "id", required = true) Long id, Model model) {
 		model.addAttribute("newKid", kidService.findById(id));
+		return "employee_page";
+	}
+	
+	@RequestMapping(value = "/deleteKid", method = RequestMethod.GET)
+	public String deleteKid(@RequestParam(value = "id", required = true) Long id, Model model) {
+		kidService.delete(kidService.findById(id));
+		return "employee_page";
+	}
+	
+	@RequestMapping(value = "/addRelation", method = RequestMethod.POST)
+	public String addRelation(@RequestParam(value = "kidId") Long kidId,
+							@RequestParam(value = "guardianId") Long guardianId,
+							@RequestParam(value = "relation") String relation) {
+		
+		Guardian guardian = guardianService.findById(guardianId);
+		Kid kid = kidService.findById(kidId);
+		
+		guardian.getKids().add(kid);
+		//kid.getGuardians().add(guardian);
+		
+		guardianService.save(guardian);
 		return "employee_page";
 	}
 	

@@ -33,7 +33,7 @@ public class Guardian {
 		
 	private String password;
 	
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
 	@Fetch(value = FetchMode.SUBSELECT)
 	@JoinTable(name = "kid_guardian", joinColumns = @JoinColumn(name = "guardian_id", referencedColumnName = "id"),
 										inverseJoinColumns = @JoinColumn(name = "kid_id", referencedColumnName = "id"))
@@ -41,12 +41,12 @@ public class Guardian {
 	
 	private String comment;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(name = "account_id")
 	private Account account;
 	
 	public Guardian() {
-		
+
 	}
 	
 	public Guardian(long iD, String firstName, String lastName, String uMCN, Account account, String password,

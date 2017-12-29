@@ -21,7 +21,7 @@ public class Classroom {
 	@Column(columnDefinition = "INT(11)")
 	private Long id;
 	
-	@OneToMany(mappedBy = "classroom", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "classroom", cascade = CascadeType.MERGE)
 	@Fetch(value = FetchMode.SUBSELECT)
 	private Set<Class> classes;
 	
@@ -32,7 +32,7 @@ public class Classroom {
 	private int room_number;
 
 	public Classroom() {
-		
+
 	}
 	
 	public Classroom(long iD, String name, int floor, int room_number, Set<Class> classes) {

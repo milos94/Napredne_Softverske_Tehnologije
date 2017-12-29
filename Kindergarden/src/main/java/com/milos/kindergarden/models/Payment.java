@@ -27,7 +27,7 @@ public class Payment {
 	
 	private LocalDateTime date;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(name = "account_id")
 	private Account account;
 	
@@ -76,6 +76,9 @@ public class Payment {
 
 	public void setAccount(Account account) {
 		this.account = account;
+		if(account.getLastPayment().isBefore(this.date)) {
+			account.setLastPayment(this.date);
+		}
 	}
 
 	public String getComment() {

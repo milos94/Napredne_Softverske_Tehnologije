@@ -28,11 +28,11 @@ public class Account {
 	
 	private String comment;
 	
-	@OneToMany(mappedBy = "account", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "account", cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
 	@Fetch(value = FetchMode.SUBSELECT)
 	private Set<Payment> payments;
 	
-	@OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "account", cascade = CascadeType.MERGE)
 	@Fetch(value = FetchMode.SUBSELECT)
 	private Set<Guardian> guardians;
 	
@@ -94,7 +94,7 @@ public class Account {
 	}
 	
 	public LocalDateTime getLastPayment() {
-		return lastPayment;
+		return lastPayment == null ? LocalDateTime.MIN : lastPayment;
 	}
 
 	public void setLastPayment(LocalDateTime lastPayment) {

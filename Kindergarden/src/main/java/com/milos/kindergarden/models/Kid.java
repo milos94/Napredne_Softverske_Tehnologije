@@ -33,14 +33,14 @@ public class Kid {
 	@JoinColumn(name = "group_id")
 	private Class group;
 	
-	@ManyToMany( mappedBy = "kids", cascade = CascadeType.ALL)
+	@ManyToMany( mappedBy = "kids", cascade = CascadeType.MERGE)
 	@Fetch(value = FetchMode.SUBSELECT)
 	Set<Guardian> guardians;
 	
 	private String comment;
 	
 	public Kid(){
-		
+;
 	}
 	
 	public Kid(Long id, String firstName, String lastName, LocalDate dateOfBirth, Class group, Set<Guardian> guardians,
@@ -111,4 +111,7 @@ public class Kid {
 		this.comment = comment;
 	}
 	
+	public void setDateOfBirth(String date) {
+		this.dateOfBirth = LocalDate.parse(date);
+	}
 }

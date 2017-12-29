@@ -25,7 +25,7 @@ public class Class {
 	
 	private String name;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(name = "classroom_id")
 	private Classroom classroom;
 	
@@ -33,12 +33,12 @@ public class Class {
 	
 	private String comment;
 	
-	@ManyToMany( mappedBy = "classes"  ,cascade = CascadeType.ALL)
+	@ManyToMany( mappedBy = "classes"  ,cascade = CascadeType.MERGE)
 	@Fetch(value = FetchMode.SUBSELECT)
 	Set<Employee> teachers;
 	
 	public Class() {
-		
+
 	}
 
 	public Class(long iD, String name, Classroom classroom, double price, String comment, Set<Employee> teachers) {

@@ -1,6 +1,7 @@
 package com.milos.kindergarden.models;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -36,7 +37,7 @@ public class Employee {
 	
 	private String password;
 	
-	@ManyToMany(cascade = CascadeType.ALL)
+	@ManyToMany(cascade = CascadeType.MERGE)
 	@Fetch(value = FetchMode.SUBSELECT)
 	@JoinTable(name = "teacher_group", joinColumns = @JoinColumn(name = "teacher_id", referencedColumnName = "id"),
 									inverseJoinColumns = @JoinColumn(name = "group_id", referencedColumnName = "id"))
@@ -45,7 +46,7 @@ public class Employee {
 	private String comment;
 	
 	public Employee() {
-		
+		classes = new HashSet<Class>();
 	}
 	
 	public Employee(Long id, String firstName, String lastName, LocalDate dateOfEmployment, double pay, String type,
