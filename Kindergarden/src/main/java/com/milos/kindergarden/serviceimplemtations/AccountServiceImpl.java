@@ -3,6 +3,8 @@ package com.milos.kindergarden.serviceimplemtations;
 import java.util.Collections;
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +13,7 @@ import com.milos.kindergarden.repositories.AccountCrudRepository;
 import com.milos.kindergarden.services.AccountService;
 
 @Service
+@Transactional
 public class AccountServiceImpl implements AccountService {
 	
 	private AccountCrudRepository repository;
@@ -86,5 +89,9 @@ public class AccountServiceImpl implements AccountService {
 		repository.delete(account);
 	}
 	
+	@Override
+	public void refresh() {
+		this.load();
+	}
 
 }

@@ -13,4 +13,6 @@ public interface KidService {
 	Kid save(Kid kid);
 	
 	void delete(Kid kid);
+
+	void refresh();
 }

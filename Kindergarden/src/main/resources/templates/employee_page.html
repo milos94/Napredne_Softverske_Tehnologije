@@ -72,6 +72,8 @@
 				<li class="nav-item"><a class="nav-link js-scroll-trigger"
 					href="#awards">Employees</a></li>
 				<li class="nav-item"><a class="nav-link js-scroll-trigger"
+					href="/employee/refresh">Refresh</a></li>
+				<li class="nav-item"><a class="nav-link js-scroll-trigger"
 					href="/logout">Log out</a></li>
 			</ul>
 		</div>
@@ -137,16 +139,16 @@
 									<td th:text="${kid.firstName}"></td>
 									<td th:text="${kid.lastName}"></td>
 									<td th:text="${kid.dateOfBirth}"></td>
-									<td th:text="${kid.group.name}"></td>
+									<td th:text="${kid.group?.name}"></td>
 									<td><th:block th:each="guardian : ${kid.guardians}"
 											th:text="${guardian.id} + ' '" /></td>
 									<td th:text="${kid.comment}"></td>
 									<td><a
-										th:href="@{'/selectKid?id=' + ${kid.id}} + '#experience'">
+										th:href="@{'/employee/selectKid?id=' + ${kid.id}} + '#experience'">
 											<button class="btn btn-primary">Select</button>
 									</a></td>
 									<td><a
-										th:href="@{'/deleteKid?id=' + ${kid.id}} + '#experience'">
+										th:href="@{'/employee/deleteKid?id=' + ${kid.id}} + '#experience'">
 											<button class="btn btn-danger">Delete</button>
 									</a></td>
 								</tr>
@@ -155,7 +157,7 @@
 					</div>
 					<br />
 					<div>
-						<form class="form" th:action="@{/addKid}" th:object="${newKid}"
+						<form class="form" th:action="@{/employee/addKid}" th:object="${newKid}"
 							th:method="@{POST}">
 							<table>
 								<thead></thead>
@@ -224,16 +226,16 @@
 									<td th:text="${guardian.firstName}"></td>
 									<td th:text="${guardian.lastName}"></td>
 									<td th:text="${guardian.UMCN}"></td>
-									<td th:text="${guardian.account.id}"></td>
+									<td th:text="${guardian.account?.id}"></td>
 									<td><th:block th:each="kid : ${guardian.kids}"
 											th:text="${kid.id} + ' '" /></td>
 									<td th:text="${guardian.comment}"></td>
 									<td><a
-										th:href="@{'/selectGuardian?id=' + ${guardian.id}} + '#education'">
+										th:href="@{'/employee/selectGuardian?id=' + ${guardian.id}} + '#education'">
 											<button class="btn btn-primary">Select</button>
 									</a></td>
 									<td><a
-										th:href="@{'/deleteGuardian?id=' + ${guardian.id}} + '#education'">
+										th:href="@{'/employee/deleteGuardian?id=' + ${guardian.id}} + '#education'">
 											<button class="btn btn-danger">Delete</button>
 									</a></td>
 								</tr>
@@ -242,7 +244,7 @@
 					</div>
 					<br />
 					<div>
-						<form th:method="@{POST}" th:action="@{/addGuardian}"
+						<form th:method="@{POST}" th:action="@{/employee/addGuardian}"
 							th:object="${newGuardian}">
 							<table>
 								<thead></thead>
@@ -293,7 +295,7 @@
 				<h2 class="mb-5">Relations</h2>
 
 				<div class="resume-item d-flex flex-column flex-md-row mb-5">
-					<form th:action="@{/addRelation}" th:method="@{POST}">
+					<form th:action="@{/employee/addRelation}" th:method="@{POST}">
 						<p>
 							<select th:name="@{kidId}">
 								<option th:each="kid : ${kids}" th:value="${kid.id}"
@@ -332,18 +334,18 @@
 							<td th:text="${account.lastPayment}"></td>
 							<td th:text="${account.comment}"></td>
 							<td><a
-								th:href="@{'/selectAccount?id=' + ${account.id}} + '#skills'">
+								th:href="@{'/employee/selectAccount?id=' + ${account.id}} + '#skills'">
 									<button class="btn btn-primary">Select</button>
 							</a></td>
 							<td><a
-								th:href="@{'/deleteAccount?id=' + ${account.id}} + '#skills'">
+								th:href="@{'/employee/deleteAccount?id=' + ${account.id}} + '#skills'">
 									<button class="btn btn-danger">Delete</button>
 							</a></td>
 						</tr>
 					</tbody>
 				</table>
 				<div>
-					<form th:action="@{/addAccount}" th:method="@{POST}"
+					<form th:action="@{/employee/addAccount}" th:method="@{POST}"
 						th:object="${newAccount}">
 						<p>
 							<input type="number" th:field="*{balance}" placeholder="Balance" />
@@ -374,16 +376,16 @@
 						<tbody>
 							<tr th:each="payment: ${payments}">
 								<td th:text="${payment.id}"></td>
-								<td th:text="${payment.account.id}"></td>
+								<td th:text="${payment.account?.id}"></td>
 								<td th:text="${payment.amount}"></td>
 								<td th:text="${payment.date}"></td>
 								<td th:text="${payment.comment}"></td>
 								<td><a
-									th:href="@{'/selectPayment?id=' + ${payment.id}} + '#interests'">
+									th:href="@{'/employee/selectPayment?id=' + ${payment.id}} + '#interests'">
 										<button class="btn btn-primary">Select</button>
 								</a></td>
 								<td><a
-									th:href="@{'/deletePayment?id=' + ${payment.id}} + '#interests'">
+									th:href="@{'/employee/deletePayment?id=' + ${payment.id}} + '#interests'">
 										<button class="btn btn-danger">Delete</button>
 								</a></td>
 							</tr>
@@ -391,7 +393,7 @@
 					</table>
 				</div>
 				<div>
-					<form method="POST" th:action="@{/addPayment}"
+					<form method="POST" th:action="@{/employee/addPayment}"
 						th:object="${newPayment}" class="form">
 						<p>
 							<select th:name="@{accountId}">
@@ -439,11 +441,11 @@
 								<td th:text="${employee.type}"></td>
 								<td th:text="${employee.comment}"></td>
 								<td><a
-									th:href="@{'/selectEmployee?id=' + ${employee.id}} + '#awards'">
+									th:href="@{'/employee/selectEmployee?id=' + ${employee.id}} + '#awards'">
 										<button class="btn btn-primary">Select</button>
 								</a></td>
 								<td><a
-									th:href="@{'/deleteEmployee?id=' + ${employee.id}} + '#awards'">
+									th:href="@{'/employee/deleteEmployee?id=' + ${employee.id}} + '#awards'">
 										<button class="btn btn-danger">Delete</button>
 								</a></td>
 							</tr>
@@ -452,7 +454,7 @@
 				</div>
 
 				<div>
-					<form th:method="@{POST}" th:action="@{/addEmployee}"
+					<form th:method="@{POST}" th:action="@{/employee/addEmployee}"
 						th:class="@{form}" th:object="${newEmployee}">
 						<table>
 							<thead></thead>

@@ -3,6 +3,8 @@ package com.milos.kindergarden.serviceimplemtations;
 import java.util.Collections;
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +13,7 @@ import com.milos.kindergarden.repositories.GuardianCrudRepository;
 import com.milos.kindergarden.services.GuardianService;
 
 @Service
+@Transactional
 public class GuardianServiceImpl implements GuardianService {
 	
 	private GuardianCrudRepository repository;
@@ -97,6 +100,11 @@ public class GuardianServiceImpl implements GuardianService {
 	public void delete(Guardian guardian) {
 		guardians.remove(guardian);
 		repository.delete(guardian);
+	}
+	
+	@Override
+	public void refresh() {
+		this.load();
 	}
 	
 }

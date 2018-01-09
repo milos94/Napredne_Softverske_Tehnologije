@@ -16,4 +16,6 @@ public interface ClassService {
 	
 	void delete(Class clas);
 
+	void refresh();
+
 }

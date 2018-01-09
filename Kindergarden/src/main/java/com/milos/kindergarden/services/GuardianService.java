@@ -15,4 +15,6 @@ public interface GuardianService {
 	Guardian save(Guardian newGuardian);
 	
 	void delete(Guardian guardian);
+
+	void refresh();
 }

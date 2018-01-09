@@ -33,7 +33,7 @@ public class Class {
 	
 	private String comment;
 	
-	@ManyToMany( mappedBy = "classes"  ,cascade = CascadeType.MERGE)
+	@ManyToMany( mappedBy = "classes"  ,cascade = CascadeType.REFRESH)
 	@Fetch(value = FetchMode.SUBSELECT)
 	Set<Employee> teachers;
 	

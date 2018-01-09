@@ -6,12 +6,15 @@ import com.milos.kindergarden.services.ClassService;
 import java.util.Collections;
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.milos.kindergarden.models.Class;
 
 @Service
+@Transactional
 public class ClassServiceImpl implements ClassService {
 	
 	private ClassCrudRepository repository;
@@ -99,5 +102,10 @@ public class ClassServiceImpl implements ClassService {
 	public void delete(Class clas) {
 		classes.remove(clas);
 		repository.delete(clas);
+	}
+	
+	@Override
+	public void refresh() {
+		this.load();
 	}
 }

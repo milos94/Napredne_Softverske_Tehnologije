@@ -3,6 +3,8 @@ package com.milos.kindergarden.serviceimplemtations;
 import java.util.Collections;
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +13,7 @@ import com.milos.kindergarden.repositories.EmployeeCrudRepository;
 import com.milos.kindergarden.services.EmployeeService;
 
 @Service
+@Transactional
 public class EmployeeServiceImpl implements EmployeeService {
 	
 	private EmployeeCrudRepository repository;
@@ -99,6 +102,11 @@ public class EmployeeServiceImpl implements EmployeeService {
 	public void delete(Employee employee) {
 		employees.remove(employee);
 		repository.delete(employee);
+	}
+	
+	@Override
+	public void refresh() {
+		this.load();
 	}
 	
 }

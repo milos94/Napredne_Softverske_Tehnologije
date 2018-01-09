@@ -14,4 +14,6 @@ public interface PaymentService {
 	
 	void delete(Payment payment);
 
+	void refresh();
+
 }

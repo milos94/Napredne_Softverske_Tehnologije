@@ -3,6 +3,8 @@ package com.milos.kindergarden.serviceimplemtations;
 import java.util.Collections;
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +13,7 @@ import com.milos.kindergarden.repositories.ClassroomCrudRepository;
 import com.milos.kindergarden.services.ClassroomService;
 
 @Service
+@Transactional
 public class ClassroomServiceImpl implements ClassroomService {
 	
 	private ClassroomCrudRepository repository;
@@ -83,5 +86,10 @@ public class ClassroomServiceImpl implements ClassroomService {
 	public void delete(Classroom classroom) {
 		classrooms.remove(classroom);
 		repository.delete(classroom);
+	}
+	
+	@Override
+	public void refresh() {
+		this.load();
 	}
 }

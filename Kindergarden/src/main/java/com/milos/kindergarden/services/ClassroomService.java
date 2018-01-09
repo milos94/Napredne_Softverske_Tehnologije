@@ -13,4 +13,6 @@ public interface ClassroomService {
 	Classroom save(Classroom newClassrom);
 	
 	void delete(Classroom clasroom);
+
+	void refresh();
 }

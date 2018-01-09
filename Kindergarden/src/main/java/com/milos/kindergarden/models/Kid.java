@@ -33,7 +33,7 @@ public class Kid {
 	@JoinColumn(name = "group_id")
 	private Class group;
 	
-	@ManyToMany( mappedBy = "kids", cascade = CascadeType.MERGE)
+	@ManyToMany( mappedBy = "kids", cascade = CascadeType.REFRESH)
 	@Fetch(value = FetchMode.SUBSELECT)
 	Set<Guardian> guardians;
 	

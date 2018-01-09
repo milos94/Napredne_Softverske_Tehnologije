@@ -49,11 +49,26 @@ public class EmployeeController {
 		this.paymentService = paymentService;
 		this.classService = classService;
 	}
+	
+	@RequestMapping(value = "/employee/refresh", method = RequestMethod.GET)
+	public String refresh(Model model) {
+		
+		guardianService.refresh();
+		kidService.refresh();
+		accountService.refresh();
+		employeeService.refresh();
+		paymentService.refresh();
+		classService.refresh();
+		
+		return employeePage(model);
+	}
 
 	@RequestMapping(value ="/employee", method = RequestMethod.GET)
 	public String employeePage(Model model) {
 		EmployeeUserDetails employeeUserDetails = (EmployeeUserDetails) SecurityContextHolder.getContext()
 													.getAuthentication().getPrincipal();
+		
+		
 		
 		model.addAttribute("emp",employeeUserDetails.getUser());
 		model.addAttribute("newKid", new Kid());
@@ -71,7 +86,7 @@ public class EmployeeController {
 		return "employee_page";
 	}
 	
-	@RequestMapping(value = "/addKid", method = RequestMethod.POST)
+	@RequestMapping(value = "/employee/addKid", method = RequestMethod.POST)
 	public String addKid(@ModelAttribute(value = "newKid") Kid kid, 
 						@RequestParam(value = "date", required = true) String dateOfBirth,
 						@RequestParam(value = "groupId", required = true) Long groupId,
@@ -84,7 +99,7 @@ public class EmployeeController {
 		return "employee_page";
 	}
 	
-	@RequestMapping(value = "/addGuardian", method = RequestMethod.POST)
+	@RequestMapping(value = "/employee/addGuardian", method = RequestMethod.POST)
 	public String addGuardian(@ModelAttribute(value = "newGuardian") Guardian guardian,
 							@RequestParam(value = "accountId", required = true) Long accountId,
 							Model model) {
@@ -94,14 +109,14 @@ public class EmployeeController {
 		return "employee_page";
 	}
 	
-	@RequestMapping(value = "/addAccount", method = RequestMethod.POST)
+	@RequestMapping(value = "/employee/addAccount", method = RequestMethod.POST)
 	public String addAccount(@ModelAttribute(value = "newAccount") Account account, Model model) {
 		accountService.save(account);
 		model.addAttribute("newAccount", new Account());
 		return "employee_page";
 	}
 	
-	@RequestMapping(value = "/addPayment", method = RequestMethod.POST)
+	@RequestMapping(value = "/employee/addPayment", method = RequestMethod.POST)
 	public String addPayment(@ModelAttribute(value = "newPayment") Payment payment,
 							@RequestParam(value = "date", required = true) String date,
 							@RequestParam(value = "time", required = true) String time,
@@ -120,7 +135,7 @@ public class EmployeeController {
 		return "employee_page";
 	}
 	
-	@RequestMapping(value = "/addEmployee", method = RequestMethod.POST)
+	@RequestMapping(value = "/employee/addEmployee", method = RequestMethod.POST)
 	public String addEmployee(@ModelAttribute(value = "newEmployee") Employee employee,
 							@RequestParam(value = "date", required = true) String date,
 							Model model) {
@@ -135,67 +150,79 @@ public class EmployeeController {
 		return "employee_page";
 	}
 	
-	@RequestMapping(value = "/selectGuardian", method = RequestMethod.GET)
+	@RequestMapping(value = "/employee/selectGuardian", method = RequestMethod.GET)
 	public String selectGuardian(@RequestParam(value = "id", required = true) Long id, Model model) {
 		model.addAttribute("newGuardian", guardianService.findById(id));
 		return "employee_page";
 	}
 	
-	@RequestMapping(value = "/deleteGuardian", method = RequestMethod.GET)
+	@RequestMapping(value = "/employee/deleteGuardian", method = RequestMethod.GET)
 	public String deleteGuardian(@RequestParam(value = "id", required = true) Long id, Model model) {
-		guardianService.delete(guardianService.findById(id));
+		Guardian guardian = guardianService.findById(id);
+		kidService.findAll().forEach(k -> k.getGuardians().remove(guardian));
+		guardianService.delete(guardian);
 		return "employee_page";
 	}
 	
-	@RequestMapping(value = "/selectAccount", method = RequestMethod.GET)
+	@RequestMapping(value = "/employee/selectAccount", method = RequestMethod.GET)
 	public String selectAccount(@RequestParam(value = "id", required = true) Long id, Model model) {
 		model.addAttribute("newAccount", accountService.findById(id));
 		return "employee_page";
 	}
 	
-	@RequestMapping(value = "/deleteAccount", method = RequestMethod.GET)
+	@RequestMapping(value = "/employee/deleteAccount", method = RequestMethod.GET)
 	public String deleteAccount(@RequestParam(value = "id", required = true) Long id, Model model) {
-		accountService.delete(accountService.findById(id));
+		Account account = accountService.findById(id);
+		
+		for(Guardian g : guardianService.findAll()) {
+			if(g.getAccount().equals(account)) {
+				g.setAccount(null);
+			}
+		}
+		accountService.delete(account);
+		
 		return "employee_page";
 	}
 	
-	@RequestMapping(value = "/selectPayment", method = RequestMethod.GET)
+	@RequestMapping(value = "/employee/selectPayment", method = RequestMethod.GET)
 	public String selectpayment(@RequestParam(value = "id", required = true) Long id, Model model) {
 		model.addAttribute("newPayment", paymentService.findById(id));
 		return "employee_page";
 	}
 	
-	@RequestMapping(value = "/deletePayment", method = RequestMethod.GET)
+	@RequestMapping(value = "/employee/deletePayment", method = RequestMethod.GET)
 	public String deletePayment(@RequestParam(value = "id", required = true) Long id, Model model) {
 		paymentService.delete(paymentService.findById(id));
 		return "employee_page";
 	}
 	
-	@RequestMapping(value = "/selectEmployee", method = RequestMethod.GET)
+	@RequestMapping(value = "/employee/selectEmployee", method = RequestMethod.GET)
 	public String selectEmployee(@RequestParam(value = "id", required = true) Long id, Model model) {
 		model.addAttribute("newEmployee", employeeService.findById(id));
 		return "employee_page";
 	}
 	
-	@RequestMapping(value = "/deleteEmployee", method = RequestMethod.GET)
+	@RequestMapping(value = "/employee/deleteEmployee", method = RequestMethod.GET)
 	public String deleteEmployee(@RequestParam(value = "id", required = true) Long id, Model model) {
 		employeeService.delete(employeeService.findById(id));
 		return "employee_page";
 	}
 	
-	@RequestMapping(value = "/selectKid", method = RequestMethod.GET)
+	@RequestMapping(value = "/employee/selectKid", method = RequestMethod.GET)
 	public String selectKid(@RequestParam(value = "id", required = true) Long id, Model model) {
 		model.addAttribute("newKid", kidService.findById(id));
 		return "employee_page";
 	}
 	
-	@RequestMapping(value = "/deleteKid", method = RequestMethod.GET)
+	@RequestMapping(value = "/employee/deleteKid", method = RequestMethod.GET)
 	public String deleteKid(@RequestParam(value = "id", required = true) Long id, Model model) {
-		kidService.delete(kidService.findById(id));
+		Kid kid = kidService.findById(id);
+		guardianService.findAll().forEach(g -> g.getKids().remove(kid));
+		kidService.delete(kid);
 		return "employee_page";
 	}
 	
-	@RequestMapping(value = "/addRelation", method = RequestMethod.POST)
+	@RequestMapping(value = "/employee/addRelation", method = RequestMethod.POST)
 	public String addRelation(@RequestParam(value = "kidId") Long kidId,
 							@RequestParam(value = "guardianId") Long guardianId,
 							@RequestParam(value = "relation") String relation) {
@@ -204,7 +231,7 @@ public class EmployeeController {
 		Kid kid = kidService.findById(kidId);
 		
 		guardian.getKids().add(kid);
-		//kid.getGuardians().add(guardian);
+		kid.getGuardians().add(guardian);
 		
 		guardianService.save(guardian);
 		return "employee_page";

@@ -3,6 +3,8 @@ package com.milos.kindergarden.serviceimplemtations;
 import java.util.Collections;
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +13,7 @@ import com.milos.kindergarden.repositories.PaymentCrudRepository;
 import com.milos.kindergarden.services.PaymentService;
 
 @Service
+@Transactional
 public class PaymentServiceImpl implements PaymentService {
 	
 	private PaymentCrudRepository repository;
@@ -88,5 +91,10 @@ public class PaymentServiceImpl implements PaymentService {
 	public void delete(Payment payment) {
 		payments.remove(payment);
 		repository.delete(payment);
+	}
+	
+	@Override
+	public void refresh() {
+		this.load();
 	}
 }

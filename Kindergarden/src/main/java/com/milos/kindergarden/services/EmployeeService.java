@@ -15,4 +15,6 @@ public interface EmployeeService {
 	Employee save(Employee newEmployee);
 	
 	void delete(Employee employee);
+
+	void refresh();
 }
