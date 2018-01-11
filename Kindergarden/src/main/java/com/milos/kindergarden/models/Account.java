@@ -32,7 +32,7 @@ public class Account {
 	@Fetch(value = FetchMode.SUBSELECT)
 	private Set<Payment> payments;
 	
-	@OneToMany(mappedBy = "account", cascade = CascadeType.MERGE)
+	@OneToMany(mappedBy = "account", cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
 	@Fetch(value = FetchMode.SUBSELECT)
 	private Set<Guardian> guardians;
 	

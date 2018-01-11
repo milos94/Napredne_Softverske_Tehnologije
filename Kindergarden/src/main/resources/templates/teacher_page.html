@@ -9,7 +9,7 @@
 <meta name="description" content="" />
 <meta name="author" content="" />
 
-<title>Emplyee page</title>
+<title>Teacher page</title>
 
 <!-- Bootstrap core CSS -->
 <link th:href="@{vendor/bootstrap/css/bootstrap.min.css}"
@@ -147,7 +147,7 @@
 					</div>
 					<br />
 					<div>
-						<form class="form" th:action="@{/employee/addKidToClass}" th:method="@{POST}">
+						<form class="form" th:action="@{/teacher/addKidToClass}" th:method="@{POST}">
 							<p>
 								<select th:name = "@{kidId}">
 									<option th:each="kid : ${kids}" th:value="${kid.id}" th:text ="@{${kid.firstName}+' '+${kid.lastName}}" />
@@ -222,7 +222,7 @@
 									<tr>
 										<td>Classroom</td>
 										<td>
-											<select th:value = "@{classroomId}">
+											<select th:name = "@{classroomId}" th:value = "${newClass?.classroom?.id}">
 												<option th:each="classroom : ${classrooms}" th:value="${classroom.id}" th:text="${classroom.name}"/> 
 											</select>
 										</td>

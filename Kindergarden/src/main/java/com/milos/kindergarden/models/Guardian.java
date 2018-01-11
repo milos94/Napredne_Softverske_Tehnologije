@@ -41,7 +41,7 @@ public class Guardian {
 	
 	private String comment;
 	
-	@ManyToOne(cascade = CascadeType.MERGE)
+	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
 	@JoinColumn(name = "account_id")
 	private Account account;
 	
