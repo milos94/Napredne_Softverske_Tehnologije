@@ -161,6 +161,7 @@ public class EmployeeController {
 		Guardian guardian = guardianService.findById(id);
 		kidService.findAll().forEach(k -> k.getGuardians().remove(guardian));
 		guardianService.delete(guardian);
+		model.addAttribute("newGuardian", new Guardian());
 		return "employee_page";
 	}
 	
@@ -180,6 +181,7 @@ public class EmployeeController {
 			}
 		}
 		accountService.delete(account);
+		model.addAttribute("newAccount", new Account());
 		
 		return "employee_page";
 	}
@@ -193,6 +195,7 @@ public class EmployeeController {
 	@RequestMapping(value = "/employee/deletePayment", method = RequestMethod.GET)
 	public String deletePayment(@RequestParam(value = "id", required = true) Long id, Model model) {
 		paymentService.delete(paymentService.findById(id));
+		model.addAttribute("newPayment", new Payment());
 		return "employee_page";
 	}
 	
@@ -205,6 +208,7 @@ public class EmployeeController {
 	@RequestMapping(value = "/employee/deleteEmployee", method = RequestMethod.GET)
 	public String deleteEmployee(@RequestParam(value = "id", required = true) Long id, Model model) {
 		employeeService.delete(employeeService.findById(id));
+		model.addAttribute("newEmployee", new Employee());
 		return "employee_page";
 	}
 	
@@ -219,6 +223,7 @@ public class EmployeeController {
 		Kid kid = kidService.findById(id);
 		guardianService.findAll().forEach(g -> g.getKids().remove(kid));
 		kidService.delete(kid);
+		model.addAttribute("newKid", new Kid());
 		return "employee_page";
 	}
 	

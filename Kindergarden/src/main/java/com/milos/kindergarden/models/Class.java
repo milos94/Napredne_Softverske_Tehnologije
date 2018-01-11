@@ -5,6 +5,7 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -33,7 +34,7 @@ public class Class {
 	
 	private String comment;
 	
-	@ManyToMany( mappedBy = "classes"  ,cascade = CascadeType.REFRESH)
+	@ManyToMany( mappedBy = "classes"  ,cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
 	@Fetch(value = FetchMode.SUBSELECT)
 	Set<Employee> teachers;
 	

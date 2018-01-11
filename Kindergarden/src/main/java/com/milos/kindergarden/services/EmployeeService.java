@@ -17,4 +17,6 @@ public interface EmployeeService {
 	void delete(Employee employee);
 
 	void refresh();
+	
+	List<Employee> findByType(String type);
 }

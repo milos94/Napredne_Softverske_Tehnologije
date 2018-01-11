@@ -108,5 +108,11 @@ public class EmployeeServiceImpl implements EmployeeService {
 	public void refresh() {
 		this.load();
 	}
+
+	@Override
+	public List<Employee> findByType(String type) {
+		employees = repository.findByType(type);
+		return employees;
+	}
 	
 }

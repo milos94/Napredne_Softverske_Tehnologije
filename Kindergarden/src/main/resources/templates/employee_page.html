@@ -172,7 +172,7 @@
 									</tr>
 									<tr>
 										<td>Date of birth:</td>
-										<td><input type="date" th:name="@{date}" /></td>
+										<td><input type="date" th:name="@{date}" th:value="${newKid?.dateOfBirth}"/></td>
 									</tr>
 									<tr>
 										<td>Group:</td>
@@ -401,8 +401,9 @@
 									<option th:value="${account.id}" th:text="${account.id}"></option>
 								</th:block>
 							</select> <input th:field="*{amount}" type="number" placeholder="Amount" />
-							<input th:name="@{date}" type="date" /> <input th:name="@{time}"
-								type="time" /> <input th:field="*{comment}" type="text"
+							<input th:name="@{date}" type="date" th:value = "${newPayment?.date}"/> 
+							<input th:name="@{time}" type="time" th:value = "${newPayment?.date}"/>
+							<input th:field="*{comment}" type="text"
 								placeholder="Comment" />
 						</p>
 						<p>
@@ -469,7 +470,7 @@
 								</tr>
 								<tr>
 									<td>Date of Employment:</td>
-									<td><input type="date" th:name="@{date}" /></td>
+									<td><input type="date" th:name="@{date}" th:value="${newEmployee?.dateOfEmployment}" /></td>
 								</tr>
 								<tr>
 									<td>Pay:</td>

@@ -5,6 +5,7 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -21,7 +22,7 @@ public class Classroom {
 	@Column(columnDefinition = "INT(11)")
 	private Long id;
 	
-	@OneToMany(mappedBy = "classroom", cascade = CascadeType.MERGE)
+	@OneToMany(mappedBy = "classroom", cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
 	@Fetch(value = FetchMode.SUBSELECT)
 	private Set<Class> classes;
 	
@@ -29,7 +30,7 @@ public class Classroom {
 	
 	private int floor;
 	
-	private int room_number;
+	private int roomNumber;
 
 	public Classroom() {
 
@@ -40,7 +41,7 @@ public class Classroom {
 		id = iD;
 		this.name = name;
 		this.floor = floor;
-		this.room_number = room_number;
+		this.roomNumber = room_number;
 		this.classes = classes;
 	}
 
@@ -60,12 +61,12 @@ public class Classroom {
 		this.floor = floor;
 	}
 
-	public int getRoom_number() {
-		return room_number;
+	public int getRoomNumber() {
+		return roomNumber;
 	}
 
-	public void setRoom_number(int room_number) {
-		this.room_number = room_number;
+	public void setRoomNumber(int room_number) {
+		this.roomNumber = room_number;
 	}
 
 	public Long getId() {
