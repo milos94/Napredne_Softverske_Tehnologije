@@ -1,7 +1,10 @@
 package com.milos.kindergarden.serviceimplemtations;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
@@ -111,8 +114,12 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 	@Override
 	public List<Employee> findByType(String type) {
-		employees = repository.findByType(type);
-		return employees;
+		if(employees == null) {
+			employees = repository.findAll();
+		}
+		return employees.stream()
+				.filter(e -> e.getType().equals(type))
+				.collect(Collectors.toCollection(ArrayList::new));
 	}
 	
 }

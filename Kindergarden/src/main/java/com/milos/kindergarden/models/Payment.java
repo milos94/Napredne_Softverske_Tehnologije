@@ -20,7 +20,7 @@ import javax.persistence.ManyToOne;
 public class Payment {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(columnDefinition = "INT(11)")
 	private Long id;
 	
@@ -35,7 +35,7 @@ public class Payment {
 	private String comment;
 	
 	public Payment() {
-		
+		date = null;
 	}
 
 	public Payment(Long id, double amount, LocalDateTime date, Account account, String comment) {

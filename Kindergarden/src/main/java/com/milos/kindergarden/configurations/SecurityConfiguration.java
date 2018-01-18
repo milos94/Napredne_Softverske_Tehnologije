@@ -3,6 +3,7 @@ package com.milos.kindergarden.configurations;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -23,6 +24,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception{
+		
 		http.authorizeRequests()
 			.antMatchers("/","/index","/login*").permitAll()
 			.antMatchers("/css/**","/img/**","/js/**","/scss/**","/vendor/**").permitAll()
@@ -46,6 +48,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 	public DaoAuthenticationProvider authenticationProvider() {
 	    DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
 	    authProvider.setUserDetailsService(guardianDetailsService);
+	    authProvider.setPasswordEncoder(shaPasswordEncoder());
 	    return authProvider;
 	}
+	
+	@Bean
+	public ShaPasswordEncoder shaPasswordEncoder() {
+		ShaPasswordEncoder shaPasswordEncoder = new ShaPasswordEncoder(256);
+		shaPasswordEncoder.setEncodeHashAsBase64(true);
+		return shaPasswordEncoder;
+	}
+	
 }

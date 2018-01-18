@@ -1,8 +1,5 @@
 package com.milos.kindergarden.serviceimplemtations;
 
-import com.milos.kindergarden.repositories.ClassCrudRepository;
-import com.milos.kindergarden.services.ClassService;
-
 import java.util.Collections;
 import java.util.List;
 
@@ -12,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.milos.kindergarden.models.Class;
+import com.milos.kindergarden.repositories.ClassCrudRepository;
+import com.milos.kindergarden.services.ClassService;
 
 @Service
 @Transactional
@@ -89,7 +88,7 @@ public class ClassServiceImpl implements ClassService {
 							.filter(cl -> cl.getId().equals(newClass.getId()))
 							.findFirst().orElse(null);
 		if(cls == null) {
-			classes.add(cls);
+			classes.add(newClass);
 		}
 		else {
 			Collections.replaceAll(classes, cls, newClass);

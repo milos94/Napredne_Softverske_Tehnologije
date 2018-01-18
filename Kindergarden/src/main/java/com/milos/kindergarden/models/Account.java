@@ -20,7 +20,7 @@ import org.hibernate.annotations.FetchMode;
 public class Account {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(columnDefinition = "INT(11)")
 	private Long id;
 	

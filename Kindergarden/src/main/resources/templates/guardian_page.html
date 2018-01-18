@@ -55,13 +55,10 @@
             <a class="nav-link js-scroll-trigger" href="#experience">Kids</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="#skills">Groups</a>
+            <a class="nav-link js-scroll-trigger" href="#skills">Account</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="#interests">Classrooms</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="/teacher/refresh">Refresh</a>
+            <a class="nav-link js-scroll-trigger" href="#interests">Payment</a>
           </li>
           <li class="nav-item">
             <a class="nav-link js-scroll-trigger" href="/logout">Log out</a>
@@ -133,7 +130,7 @@
                 <td th:text = "${kid.firstName}"></td>
                 <td th:text = "${kid.lastName}"></td>
                 <td th:text = "${kid.dateOfBirth}"></td>
-                <td th:text = "${kid.group.name}"></td>
+                <td th:text = "${kid.group?.name}"></td>
                 <td th:text = "${kid.comment}"></td>
                </tr>
               </tbody>
@@ -159,10 +156,10 @@
             </thead>
             <tbody>
               <tr>
-                <td th:text = "${guardian.account.id}"></td>
-                <td th:text = "${guardian.account.balance}"></td>
-                <td th:text = "${guardian.account.lastPayment}"></td>
-                <td th:text = "${guardian.account.comment}"></td>
+                <td th:text = "${guardian.account?.id}"></td>
+                <td th:text = "${guardian.account?.balance}"></td>
+                <td th:text = "${guardian.account?.lastPayment}"></td>
+                <td th:text = "${guardian.account?.comment}"></td>
               </tr>
             </tbody>
           </table>
@@ -181,7 +178,7 @@
               <th>Comment</th>
             </thead>
             <tbody>
-              <tr th:each = "payment : ${guardian.account.payments}">
+              <tr th:each = "payment : ${guardian.account?.payments}">
                 <td th:text = "${payment.id}"></td>
                 <td th:text = "${payment.account.id}"></td>
                 <td th:text = "${payment.amount}"></td>

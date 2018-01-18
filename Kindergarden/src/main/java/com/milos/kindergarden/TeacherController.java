@@ -1,5 +1,6 @@
 package com.milos.kindergarden;
 
+import org.springframework.context.annotation.Scope;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.milos.kindergarden.models.Class;
+import com.milos.kindergarden.models.Classroom;
 import com.milos.kindergarden.models.Employee;
 import com.milos.kindergarden.models.Kid;
 import com.milos.kindergarden.security.EmployeeUserDetails;
@@ -19,6 +21,7 @@ import com.milos.kindergarden.services.EmployeeService;
 import com.milos.kindergarden.services.KidService;
 
 @Controller
+@Scope("session")
 @SessionAttributes({"kids", "teachers", "classes", "classrooms", "newClass", "teacher"})
 public class TeacherController {
 	
@@ -56,7 +59,7 @@ public class TeacherController {
 		model.addAttribute("teacher", employeeUserDetails.getUser());
 		
 		model.addAttribute("kids", kidService.findAll());
-		model.addAttribute("teachers", employeeService.findByType("teacher"));
+		model.addAttribute("teachers", employeeService.findByType("Teacher"));
 		model.addAttribute("classes", classService.findAll());
 		model.addAttribute("classrooms", classroomService.findAll());
 		
@@ -86,7 +89,19 @@ public class TeacherController {
 	@RequestMapping(value = "/teacher/deleteClass", method = RequestMethod.GET)
 	public String deleteClass(@RequestParam(value = "id") Long classId,
 								Model model) {
-		classService.delete(classService.findById(classId));
+		Class cls = classService.findById(classId);
+		
+		for(Kid k : kidService.findAll()) {
+			if(k.getGroup() != null && k.getGroup().equals(cls)) {
+				k.setGroup(null);
+			}
+		}
+		
+		classroomService.findAll().forEach(clsrm -> clsrm.getClasses().remove(cls));
+		
+		employeeService.findAll().forEach(t -> t.getClasses().remove(cls));
+		
+		classService.delete(cls);
 		model.addAttribute("newClass", new Class());
 		return "teacher_page";
 	}
@@ -95,7 +110,10 @@ public class TeacherController {
 	public String addClass(@ModelAttribute(value = "newClass") Class cls,
 							@RequestParam(value = "classroomId") Long classroomId,
 							Model model) {
-		cls.setClassroom(classroomService.findById(classroomId));
+		Classroom classroom = classroomService.findById(classroomId);
+		if(!cls.getClassroom().equals(classroom)) {
+			cls.setClassroom(classroomService.findById(classroomId));
+		}
 		classService.save(cls);
 		model.addAttribute("newClass", new Class());
 		

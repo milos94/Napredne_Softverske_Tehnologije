@@ -18,7 +18,7 @@ import org.hibernate.annotations.FetchMode;
 public class Classroom {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(columnDefinition = "INT(11)")
 	private Long id;
 	

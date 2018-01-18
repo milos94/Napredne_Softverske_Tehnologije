@@ -114,7 +114,7 @@ CREATE TABLE `employee` (
   `date_of_employment` date DEFAULT NULL,
   `pay` double NOT NULL,
   `type` varchar(20) DEFAULT NULL,
-  `password` varchar(43) NOT NULL,
+  `password` varchar(44) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
@@ -126,7 +126,7 @@ CREATE TABLE `employee` (
 
 LOCK TABLES `employee` WRITE;
 /*!40000 ALTER TABLE `employee` DISABLE KEYS */;
-INSERT INTO `employee` VALUES (11,'Alexander','Luthor','Bald dude!','2004-07-12',6000000,'Teacher','voqxgmGfp4+hAonOGu0KYeabf/TDHbM2Zo+8YEFT0mk'),(12,'John','Jones','Green dude','1991-12-01',5000,'Teacher','Pd5rTTXJlm5koFosuxA0/QywUctCRMio8o3F+caokV0'),(13,'Martin','Stein','Old dude.','2001-09-08',5000,'Teacher','uA8x/FD71crYbXJdAaJxOZW0SW3xAewnVQJ2vBkfrew'),(14,'Reed','Richards','Smart dude.','2014-05-14',4500,'Accountaint','5tmHt7PeOCmbmHjPFeXL82o3cGN/C0KKW6iCjbABVgk');
+INSERT INTO `employee` VALUES (11,'Alexander','Luthor','Bald dude!','2004-07-12',6000000,'Teacher','voqxgmGfp4+hAonOGu0KYeabf/TDHbM2Zo+8YEFT0mk='),(12,'John','Jones','Green dude','1991-12-01',5000,'Teacher','Pd5rTTXJlm5koFosuxA0/QywUctCRMio8o3F+caokV0='),(13,'Martin','Stein','Old dude.','2001-09-08',5000,'Teacher','uA8x/FD71crYbXJdAaJxOZW0SW3xAewnVQJ2vBkfrew='),(14,'Reed','Richards','Smart dude.','2014-05-14',4500,'Accountaint','5tmHt7PeOCmbmHjPFeXL82o3cGN/C0KKW6iCjbABVgk=');
 /*!40000 ALTER TABLE `employee` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -144,7 +144,7 @@ CREATE TABLE `guardian` (
   `UMCN` varchar(12) DEFAULT NULL,
   `comment` varchar(200) DEFAULT '/',
   `account_id` int(11) DEFAULT NULL,
-  `password` varchar(43) NOT NULL,
+  `password` varchar(44) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   KEY `fk_guardian_1_idx` (`account_id`),
@@ -158,7 +158,7 @@ CREATE TABLE `guardian` (
 
 LOCK TABLES `guardian` WRITE;
 /*!40000 ALTER TABLE `guardian` DISABLE KEYS */;
-INSERT INTO `guardian` VALUES (1,'Clark','Kent','125496378946','Dude looks like Superman?',10001,'cv66Cd1IrS10NlZwOVGUfc8wSSG1cFurAZZ0Y3ku9S8'),(2,'Louis','Lane','689534679125','Reporter',10001,'q8+1Ox/wLYyIB0/tbYfLsCAWYagBXawIcLiizwkcqG8'),(3,'Bruce','Wayne','986574326498','Rich guy',10002,'EcNq9+bqLS9pMOMS93ll+Zr9gtXHPOnLjLsUG0mFZ/Y'),(4,'Selina','Kayle','789456359715','Loves cats, stuff goes missing around her!',10002,'NRaL6w5H9zTU0yY7M+fer5Tf0TTSeXzvUOhTp+q71os'),(5,'Barry','Allen','964587321648','Dude is always late.',10003,'89MbzqVBsJd33L7Lr1PuRgViwzU18LXw+Ynr1HexmeQ'),(6,'Diana','Prince','986573154695','Damn!',10003,'5LtMat0tofiaNN+Jmo+2JgGfQ7SUTDQKwY4VrzDHwlE');
+INSERT INTO `guardian` VALUES (1,'Clark','Kent','125496378946','Dude looks like Superman?',10001,'cv66Cd1IrS10NlZwOVGUfc8wSSG1cFurAZZ0Y3ku9S8='),(2,'Louis','Lane','689534679125','Reporter',10001,'q8+1Ox/wLYyIB0/tbYfLsCAWYagBXawIcLiizwkcqG8='),(3,'Bruce','Wayne','986574326498','Rich guy',10002,'EcNq9+bqLS9pMOMS93ll+Zr9gtXHPOnLjLsUG0mFZ/Y='),(4,'Selina','Kayle','789456359715','Loves cats, stuff goes missing around her!',10002,'NRaL6w5H9zTU0yY7M+fer5Tf0TTSeXzvUOhTp+q71os='),(5,'Barry','Allen','964587321648','Dude is always late.',10003,'89MbzqVBsJd33L7Lr1PuRgViwzU18LXw+Ynr1HexmeQ='),(6,'Diana','Prince','986573154695','Damn!',10003,'5LtMat0tofiaNN+Jmo+2JgGfQ7SUTDQKwY4VrzDHwlE=');
 /*!40000 ALTER TABLE `guardian` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -288,4 +288,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-12-29 11:29:14
+-- Dump completed on 2018-01-18 20:50:06

@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
+import org.springframework.context.annotation.Scope;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,6 +29,7 @@ import com.milos.kindergarden.services.KidService;
 import com.milos.kindergarden.services.PaymentService;
 
 @Controller
+@Scope("session")
 @SessionAttributes({"emp","newKid","newPayment","newGuardian","newEmployee","newAccount",
 					"guardians","kids","accounts","payments","employees","groups"})
 public class EmployeeController {
@@ -128,9 +130,16 @@ public class EmployeeController {
 		if(time.equals("")) {
 			time = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm"));
 		}
-		payment.setDate(LocalDateTime.parse(date + 'T' + time));
-		payment.setAccount(accountService.findById(accountId));
+		
+		LocalDateTime parsed = LocalDateTime.parse(date + 'T' + time);
+		payment.setDate(parsed);
+		
+		Account acc = accountService.findById(accountId);
+		acc.setBalance(acc.getBalance() - payment.getAmount());
+		
+		payment.setAccount(acc);
 		paymentService.save(payment);
+		
 		model.addAttribute("newPayment", new Payment());
 		return "employee_page";
 	}
@@ -183,19 +192,6 @@ public class EmployeeController {
 		accountService.delete(account);
 		model.addAttribute("newAccount", new Account());
 		
-		return "employee_page";
-	}
-	
-	@RequestMapping(value = "/employee/selectPayment", method = RequestMethod.GET)
-	public String selectpayment(@RequestParam(value = "id", required = true) Long id, Model model) {
-		model.addAttribute("newPayment", paymentService.findById(id));
-		return "employee_page";
-	}
-	
-	@RequestMapping(value = "/employee/deletePayment", method = RequestMethod.GET)
-	public String deletePayment(@RequestParam(value = "id", required = true) Long id, Model model) {
-		paymentService.delete(paymentService.findById(id));
-		model.addAttribute("newPayment", new Payment());
 		return "employee_page";
 	}
 	

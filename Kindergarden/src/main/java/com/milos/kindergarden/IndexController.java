@@ -3,6 +3,7 @@ package com.milos.kindergarden;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.context.annotation.Scope;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.milos.kindergarden.security.GuardianUserDetails;
 
 @Controller
+@Scope("session")
 public class IndexController {
 	
 	@RequestMapping(value = {"/","/index"}, method = RequestMethod.GET)

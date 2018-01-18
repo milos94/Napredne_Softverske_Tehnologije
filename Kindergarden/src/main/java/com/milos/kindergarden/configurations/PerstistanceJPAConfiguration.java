@@ -58,7 +58,7 @@ public class PerstistanceJPAConfiguration {
 	    
 	    properties.put("spring.datasource.dbcp2.test-while-idle", "true"); 
 	    properties.put("spring.datasource.dbcp2.validation-query", "SELECT 1");
-	    
+	    properties.put("hibernate.use_new_id_generator_mappings", "false");
 	     
 	    
 	    return properties;

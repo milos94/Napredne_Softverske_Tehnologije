@@ -1,5 +1,6 @@
 package com.milos.kindergarden.models;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -20,7 +21,7 @@ import org.hibernate.annotations.FetchMode;
 public class Class {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(columnDefinition = "INT(11)")
 	private Long id;
 	
@@ -39,7 +40,7 @@ public class Class {
 	Set<Employee> teachers;
 	
 	public Class() {
-
+		teachers = new HashSet<Employee>();
 	}
 
 	public Class(long iD, String name, Classroom classroom, double price, String comment, Set<Employee> teachers) {
